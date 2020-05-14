@@ -1,0 +1,47 @@
+﻿@model List<CBA.Web.Models.DestinacaoBemModel>
+@{
+    ViewBag.Title = "Cadastro de Destinações de Bens";
+}
+
+<div id="cadastro">
+    <section id="cadastro_cabecalho">
+        <h1>@ViewBag.Title</h1>
+    </section>
+    <section id="cadastro_conteudo">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="row" id="grid_cabecalho">
+                        <a id="btn_incluir" class="btn btn-success" role="button"><i class="glyphicon glyphicon-plus" aria-hidden="true"> Incluir</i></a>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="grid_cadastro" class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Ativo ?</th>
+                                        <th>Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.Nome</td>
+                                            <td>@{var ativo = (item.Ativo ? "Sim" : "Não");}@ativo</td>
+                                            <td>
+                                                <a class="btn btn-primary btn-alterar" role="button"><i class="glyphicon glyphicon-pencil" aria-hidden="true"> Alterar</i></a>
+                                                <a class="btn btn-danger btn-excluir" role="button"><i class="glyphicon glyphicon-trash" aria-hidden="true"> Excluir</i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

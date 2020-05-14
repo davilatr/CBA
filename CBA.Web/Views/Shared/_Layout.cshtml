@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @{
+        ViewBag.Title = "Início";
+    }
+    <title>@ViewBag.Title - CBA</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Controle de Bens Apreendidos", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                @if (Request.IsAuthenticated)
+                {
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cadastros<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Unidades Organizacionais", "UnidadeOrganizacional", "Cadastro")</li>
+                                <li class="nav-divider"></li>
+                                <li>@Html.ActionLink("Bens Apreendidos", "BemApreendido", "Cadastro")</li>
+                                <li>@Html.ActionLink("Tipos de Bens", "TipoBem", "Cadastro")</li>
+                                <li>@Html.ActionLink("Destinação de Bens", "DestinacaoBem", "Cadastro")</li>
+                                <li>@Html.ActionLink("Unidades de Medida", "UnidadeMedida", "Cadastro")</li>
+                                <li>@Html.ActionLink("Estados de conservação", "EstadoConservacao", "Cadastro")</li>
+                                <li class="nav-divider"></li>
+                                <li>@Html.ActionLink("Auto de Infração", "AutoInfracao", "Cadastro")</li>
+                                <li>@Html.ActionLink("Termo de Apreensão", "TermoApreensao", "Cadastro")</li>
+                                <li>@Html.ActionLink("Termo de Depósito", "TermoDeposito", "Cadastro")</li>
+                                <li>@Html.ActionLink("Processo Administrativo", "ProcessoAdministrativo", "Cadastro")</li>
+                                <li class="nav-divider"></li>
+                                <li>@Html.ActionLink("Agentes e Destinatários", "Pessoa", "Cadastro")</li>
+                                <li>@Html.ActionLink("Unidade Federativa", "UnidadeFederativa", "Cadastro")</li>
+                                <li>@Html.ActionLink("Cidades", "Cidade", "Cadastro")</li>
+                                <li>@Html.ActionLink("Rotas de vistoria", "RotaVistoria", "Cadastro")</li>
+                                <li class="nav-divider"></li>
+                                <li>@Html.ActionLink("Usuários", "Usuario", "Cadastro")</li>
+                                <li>@Html.ActionLink("Perfil de usuários", "PerfilUsuario", "Cadastro")</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Operações<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Realizar Destinação de Bem", "RealizarDestinacaoBem", "Operacao")</li>
+                                <li>@Html.ActionLink("Realizar Vistoria de Bem", "RealizarVistoriaBem", "Operacao")</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Relatórios<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Bens Apreendidos", "QtdeBem", "Relatorio")</li>
+                                <li>@Html.ActionLink("Bens Apreendidos Destinados", "QtdeBemDestinado", "Relatorio")</li>
+                                <li>@Html.ActionLink("Bens por Tipo", "BemPorTipo", "Relatorio")</li>
+                                <li>@Html.ActionLink("Bens por Região", "BemPorRegiao", "Relatorio")</li>
+                                <li>@Html.ActionLink("Bens por Depositário", "BemPorDestinatario", "Relatorio")</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gráficos<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Entrada vs Destinações", "EntradaVsDestinacao", "Grafico")</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    using (Html.BeginForm("LogOff", "Login", FormMethod.Post, new { id = "logoffForm" }))
+                    {
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>@Html.ActionLink("Sobre", "Sobre", "Home")</li>
+                            <li><a href="#">Olá @User.Identity.Name</a></li>
+                            <li><a href="javascript:document.getElementById('logoffForm').submit()">Sair</a></li>
+                        </ul>
+                    }
+                }
+                else
+                {
+            <ul class="nav navbar-nav navbar-right">
+                <li>@Html.ActionLink("Sobre", "Sobre", "Home")</li>
+            </ul>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Controle de Bens Apreendidos</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
