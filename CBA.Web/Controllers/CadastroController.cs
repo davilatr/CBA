@@ -86,6 +86,13 @@ namespace CBA.Web.Controllers
             return View(_ListaDestinacaoBem);
         }
 
+        [HttpPost]
+        [Authorize]
+        public ActionResult RecuperarDestinacaoBem(int id)
+        {
+            return Json(_ListaDestinacaoBem.Find(x => x.Id == id));
+        }
+
         [Authorize]
         public ActionResult UnidadeFederativa()
         {

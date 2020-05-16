@@ -15,7 +15,7 @@ namespace CBA.Web.Models
         [Display(Name = "Senha:")]
         public string Senha { get; set; }
 
-        [Display(Name = "Lembrar me")]
+        [Display(Name = "Lembre-se de mim")]
         public bool LembrarMe { get; set; }
     }
 }

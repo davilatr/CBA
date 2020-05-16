@@ -29,13 +29,13 @@ namespace CBA.Web.Controllers
                 if (Url.IsLocalUrl(returnUrl))
                     return Redirect(returnUrl);
                 else
-                    RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
             }
             else
             {
-                ModelState.AddModelError("", "Login Inválido");
+                ModelState.AddModelError("", "Login ou senha incorreto!");
             }
-            return RedirectToAction("Index", "Home");
+            return View();
         }
 
         [HttpPost]
