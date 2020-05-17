@@ -20,7 +20,6 @@ namespace CBA.Web.Models
                 }
             }
             return retorno;
-
         }
     }
 }

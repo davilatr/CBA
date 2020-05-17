@@ -1,4 +1,5 @@
-﻿using CBA.Web.Models;
+﻿using System;
+using CBA.Web.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -81,6 +82,9 @@ namespace CBA.Web.Controllers
             return View();
         }
 
+        //-------------------------------------------------------------------
+        //Destinação de Bens
+
         [Authorize]
         public ActionResult DestinacaoBem()
         {
@@ -91,26 +95,50 @@ namespace CBA.Web.Controllers
         [Authorize]
         public ActionResult SalvarDestinacaoBem(DestinacaoBemModel obj)
         {
-            var registroBD = _ListaDestinacaoBem.Find(x => x.Id == obj.Id);
-            if (registroBD == null)
+            var resultado = "ok";
+            var mensagens = new List<string>();
+            var idSalvo = string.Empty;
+
+            if (!ModelState.IsValid)
             {
-                //incluir
-                registroBD = obj;
-                registroBD.Id = _ListaDestinacaoBem.Max(x => x.Id) + 1;
-                _ListaDestinacaoBem.Add(registroBD);
+                resultado = "aviso";
+                mensagens = ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).ToList();
             }
             else
             {
-                //alterar
-                registroBD.Nome = obj.Nome;
-                registroBD.Ativo = obj.Ativo;
+                try
+                {
+                    var registroBD = _ListaDestinacaoBem.Find(x => x.Id == obj.Id);
+
+                    if (registroBD == null)
+                    {
+                        //incluir
+                        registroBD = obj;
+                        registroBD.Id = _ListaDestinacaoBem.Max(x => x.Id) + 1;
+                        _ListaDestinacaoBem.Add(registroBD);
+                    }
+                    else
+                    {
+                        //alterar
+                        registroBD.Nome = obj.Nome;
+                        registroBD.Ativo = obj.Ativo;
+                    }
+
+                    idSalvo = registroBD.Id.ToString();
+                }
+                catch (Exception ex)
+                {
+                    resultado = "erro";
+                    Console.WriteLine(ex);
+                    throw;
+                }
             }
-            return Json(registroBD);
+            return Json(new {Resultado = resultado, Mensagens = mensagens, IdSalvo = idSalvo});
         }
 
         [HttpPost]
         [Authorize]
-        public ActionResult RecuperarDestinacaoBem(int id)
+        public ActionResult ListaDestinacaoBem(int id)
         {
             return Json(_ListaDestinacaoBem.Find(x => x.Id == id));
         }
@@ -129,6 +157,9 @@ namespace CBA.Web.Controllers
             }
             return Json(ret);
         }
+
+
+        //--------------------------------------------------------------------
 
         [Authorize]
         public ActionResult UnidadeFederativa()
