@@ -1,5 +1,6 @@
 ﻿using CBA.Web.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace CBA.Web.Controllers
@@ -88,9 +89,45 @@ namespace CBA.Web.Controllers
 
         [HttpPost]
         [Authorize]
+        public ActionResult SalvarDestinacaoBem(DestinacaoBemModel obj)
+        {
+            var registroBD = _ListaDestinacaoBem.Find(x => x.Id == obj.Id);
+            if (registroBD == null)
+            {
+                //incluir
+                registroBD = obj;
+                registroBD.Id = _ListaDestinacaoBem.Max(x => x.Id) + 1;
+                _ListaDestinacaoBem.Add(registroBD);
+            }
+            else
+            {
+                //alterar
+                registroBD.Nome = obj.Nome;
+                registroBD.Ativo = obj.Ativo;
+            }
+            return Json(registroBD);
+        }
+
+        [HttpPost]
+        [Authorize]
         public ActionResult RecuperarDestinacaoBem(int id)
         {
             return Json(_ListaDestinacaoBem.Find(x => x.Id == id));
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult ExcluirDestinacaoBem(int id)
+        {
+            var ret = false;
+            var registroBD = _ListaDestinacaoBem.Find(x => x.Id == id);
+
+            if (registroBD != null)
+            {
+                _ListaDestinacaoBem.Remove(registroBD);
+                ret = true;
+            }
+            return Json(ret);
         }
 
         [Authorize]

@@ -23,16 +23,16 @@ textarea {
     max-width: 280px;
 }
 
-.container-login {
-    width: 400px;
+#cadastro {
+    width: 70%;
     margin: 0 auto;
+    white-space: nowrap; /** added **/
 }
 
-.titulo {
-    margin-bottom: 30px;
-    text-transform: uppercase;
+#grid_cadastro > thead > tr th:nth-child(2) {
+    width: 10%;
 }
 
-.invisivel {
-    display: none;
+#grid_cadastro > thead > tr th:nth-child(3) {
+    width: 200px;
 }
