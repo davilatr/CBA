@@ -122,7 +122,8 @@ namespace CBA.Web.Models
                         comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.Nome;
                         comando.Parameters.Add("@ativo", SqlDbType.Bit).Value = this.Ativo ? 1 : 0;
 
-                        comando.CommandText = "insert into tipo_destinacao (tipo_destinacao_nome, tipo_destinacao_ativo) values (@nome, @ativo); select convert(int, scope_identity())";
+                        comando.CommandText = 
+                            "insert into tipo_destinacao (tipo_destinacao_nome, tipo_destinacao_ativo) values (@nome, @ativo); select convert(int, scope_identity())";
                         retorno = (int)comando.ExecuteScalar();
                     }
                     else

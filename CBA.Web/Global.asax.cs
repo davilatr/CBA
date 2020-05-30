@@ -17,5 +17,19 @@ namespace CBA.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        void Application_Error(object sender, EventArgs e)
+        {
+            Exception ex = Server.GetLastError();
+
+            if (ex is HttpRequestValidationException)
+            {
+                Response.Clear();
+                Response.StatusCode = 200;
+                Response.ContentType = "application/json";
+                Response.Write("{ \"Resultado\":\"aviso\",\"Mensagens\":[\"Somente entradas sem caracteres especiais podem ser enviadas.\"],\"IdSalvo\":\"\"}");
+                Response.End();
+            }
+        }
     }
 }
