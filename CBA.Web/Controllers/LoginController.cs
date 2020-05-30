@@ -35,7 +35,7 @@ namespace CBA.Web.Controllers
             {
                 ModelState.AddModelError("", "Login ou senha incorreto!");
             }
-            return View();
+            return View(login);
         }
 
         [HttpPost]

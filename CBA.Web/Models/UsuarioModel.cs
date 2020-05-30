@@ -16,7 +16,7 @@ namespace CBA.Web.Models
                 using (var comando = new SqlCommand())
                 {
                     comando.Connection = conexao;
-                    comando.CommandText = string.Format("select count(*) from usuario where usuario_login='{0}' and usuario_senha='{1}'", login, senha);
+                    comando.CommandText = string.Format("select count(*) from usuario where usuario_login='{0}' and usuario_senha='{1}'", login, CriptoHelper.HashMD5(senha));
                     retorno = ((int)comando.ExecuteScalar() > 0);
                 }
             }
