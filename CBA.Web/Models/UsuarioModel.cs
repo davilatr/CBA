@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System.Configuration;
+using System.Data.SqlClient;
 
 namespace CBA.Web.Models
 {
@@ -10,7 +11,7 @@ namespace CBA.Web.Models
 
             using (var conexao = new SqlConnection())
             {
-                conexao.ConnectionString = "Data Source=localhost;Initial Catalog=Estelar;User id=sa;Password=123456";
+                conexao.ConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
                 conexao.Open();
                 using (var comando = new SqlCommand())
                 {
