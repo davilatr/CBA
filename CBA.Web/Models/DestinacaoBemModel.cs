@@ -10,7 +10,6 @@ namespace CBA.Web.Models
         [Required(ErrorMessage = "O nome é obrigatório.")]
         public string Nome { get; set; }
 
-        
         public bool Ativo { get; set; }
 
     }
