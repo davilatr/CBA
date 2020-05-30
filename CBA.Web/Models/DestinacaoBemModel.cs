@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace CBA.Web.Models
@@ -59,8 +60,10 @@ namespace CBA.Web.Models
                 using (var comando = new SqlCommand())
                 {
                     comando.Connection = conexao;
-                    comando.CommandText = string.Format(
-                        "select * from tipo_destinacao where (tipo_destinacao_id = {0})", id);
+
+                    comando.Parameters.Add("@id", SqlDbType.Int).Value = id;
+
+                    comando.CommandText = "select * from tipo_destinacao where (tipo_destinacao_id = @id)";
                     var reader = comando.ExecuteReader();
                     if (reader.Read())
                     {
@@ -89,8 +92,10 @@ namespace CBA.Web.Models
                     using (var comando = new SqlCommand())
                     {
                         comando.Connection = conexao;
-                        comando.CommandText = string.Format(
-                            "delete from tipo_destinacao where (tipo_destinacao_id = {0})", id);
+
+                        comando.Parameters.Add("@id", SqlDbType.Int).Value = id;
+
+                        comando.CommandText = "delete from tipo_destinacao where (tipo_destinacao_id = @id)";
                         retorno = (comando.ExecuteNonQuery() > 0);
                     }
                 }
@@ -111,23 +116,27 @@ namespace CBA.Web.Models
                 using (var comando = new SqlCommand())
                 {
                     comando.Connection = conexao;
-                    
+
                     if (model == null)
                     {
-                        comando.CommandText = string.Format(
-                            "insert into tipo_destinacao (tipo_destinacao_nome, tipo_destinacao_ativo) values ('{0}', {1}); " +
-                            "select convert(int, scope_identity())", this.Nome, this.Ativo ? 1 : 0);
+                        comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.Nome;
+                        comando.Parameters.Add("@ativo", SqlDbType.Bit).Value = this.Ativo ? 1 : 0;
+
+                        comando.CommandText = "insert into tipo_destinacao (tipo_destinacao_nome, tipo_destinacao_ativo) values (@nome, @ativo); select convert(int, scope_identity())";
                         retorno = (int)comando.ExecuteScalar();
                     }
                     else
                     {
-                        comando.CommandText = string.Format(
-                            "update tipo_destinacao set tipo_destinacao_nome='{1}', tipo_destinacao_ativo={2} where tipo_destinacao_id={0}", 
-                            this.Id, this.Nome, this.Ativo ? 1 : 0);
-                        
+                        comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.Nome;
+                        comando.Parameters.Add("@ativo", SqlDbType.Bit).Value = this.Ativo ? 1 : 0;
+                        comando.Parameters.Add("@id", SqlDbType.Int).Value = this.Id;
+
+                        comando.CommandText =
+                            "update tipo_destinacao set tipo_destinacao_nome=@nome, tipo_destinacao_ativo=@ativo where tipo_destinacao_id=@id";
+
                         if (comando.ExecuteNonQuery() > 0)
                             retorno = this.Id;
-                        
+
                     }
                 }
             }

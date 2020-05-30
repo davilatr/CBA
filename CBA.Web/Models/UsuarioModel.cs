@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace CBA.Web.Models
@@ -16,7 +17,11 @@ namespace CBA.Web.Models
                 using (var comando = new SqlCommand())
                 {
                     comando.Connection = conexao;
-                    comando.CommandText = string.Format("select count(*) from usuario where usuario_login='{0}' and usuario_senha='{1}'", login, CriptoHelper.HashMD5(senha));
+
+                    comando.Parameters.Add("@login", SqlDbType.VarChar).Value = login;
+                    comando.Parameters.Add("@senha", SqlDbType.VarChar).Value = CriptoHelper.HashMD5(senha);
+
+                    comando.CommandText = "select count(*) from usuario where usuario_login=@login and usuario_senha=@senha";
                     retorno = ((int)comando.ExecuteScalar() > 0);
                 }
             }
