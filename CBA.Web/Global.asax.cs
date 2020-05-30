@@ -30,6 +30,12 @@ namespace CBA.Web
                 Response.Write("{ \"Resultado\":\"aviso\",\"Mensagens\":[\"Somente entradas sem caracteres especiais podem ser enviadas.\"],\"IdSalvo\":\"\"}");
                 Response.End();
             }
+            else if (ex is HttpAntiForgeryException)
+            {
+                Response.Clear();
+                Response.StatusCode = 200;
+                Response.End();
+            }
         }
     }
 }

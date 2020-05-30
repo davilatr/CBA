@@ -46,6 +46,7 @@
 <div id="modal_cadastro" class="collapse" role="dialog">
     <div class="text-danger collapse" id="aviso"></div>
     <fieldset>
+        @Html.AntiForgeryToken()
         <div class="">
             <div class="form-group">
                 @Html.Label("txt_nome", "Nome", new {@class = "col-md-3 control-label"})
@@ -73,6 +74,11 @@
 
 @section Scripts{
     <script>
+        function add_anti_forgery_token(data) {
+            data.__RequestVerificationToken = $('[name=__RequestVerificationToken]').val();
+            return data;
+        }
+
         function abrir_modal(dados) {
             $('#cadastro_id').val(dados.Id);
             $('#txt_nome').val(dados.Nome);
@@ -132,97 +138,97 @@
 
         $(document)
             .on('click', '#btn_incluir', function() {
-                    abrir_modal({ Id: 0, Nome: '', Ativo: true });
-                })
+                abrir_modal({ Id: 0, Nome: '', Ativo: true });
+            })
             .on('click', '#btn_alterar', function() {
-                    var btn = $(this),
-                        id = btn.closest('tr').attr('data-id'),
-                        url = '@Url.Action("ListaDestinacaoBem", "Cadastro")',
-                        param = { 'id': id };
+                var btn = $(this),
+                    id = btn.closest('tr').attr('data-id'),
+                    url = '@Url.Action("ListaDestinacaoBem", "Cadastro")',
+                    param = { 'id': id };
 
-                    $.post(url,
-                        param,
-                        function(response) {
-                            if (response) {
-                                abrir_modal(response);
-                            }
-                        });
-                })
-            .on('click', '#btn_excluir', function() {
-                    var
-                        btn = $(this),
-                        tr = btn.closest('tr'),
-                        id = tr.attr('data-id'),
-                        //item = $('#grid_cadastro').find('tr[data-id=' + id + ']').find('td:first-child').text(),
-                        item = tr.find('td:first-child').text(),
-                        url = '@Url.Action("ExcluirDestinacaoBem", "Cadastro")',
-                        param = { 'id': id };
-
-
-                    bootbox.confirm({
-                        message: ('Realmente deseja excluir o item: <b>' + item + '</b> ?'),
-                        buttons: {
-                            confirm: {
-                                label: 'Sim',
-                                className: 'btn-success'
-                            },
-                            cancel: {
-                                label: 'Não',
-                                className: 'btn-danger'
-                            }
-                        },
-                        callback: function(result) {
-                            if (result) {
-                                //console.log('This was logged in the callback: ' + result);
-                                $.post(url,
-                                    param,
-                                    function(response) {
-                                        if (response) {
-                                            tr.remove();
-                                        }
-                                    });
-                            }
+                $.post(url,
+                    add_anti_forgery_token(param),
+                    function(response) {
+                        if (response) {
+                            abrir_modal(response);
                         }
                     });
-                })
-            .on('click', '#btn_salvar', function() {
-                    var btn = $(this),
-                        url = '@Url.Action("SalvarDestinacaoBem", "Cadastro")',
-                        param = {
-                            Id: $('#cadastro_id').val(),
-                            Nome: $('#txt_nome').val(),
-                            Ativo: $('#cbx_ativo').prop('checked')
-                        };
+            })
+            .on('click', '#btn_excluir', function() {
+                var
+                    btn = $(this),
+                    tr = btn.closest('tr'),
+                    id = tr.attr('data-id'),
+                    //item = $('#grid_cadastro').find('tr[data-id=' + id + ']').find('td:first-child').text(),
+                    item = tr.find('td:first-child').text(),
+                    url = '@Url.Action("ExcluirDestinacaoBem", "Cadastro")',
+                    param = { 'id': id };
 
-                    $.post(url, param, function(response) {
-                            if (response.Resultado == 'ok') {
-                                if (param.Id == 0) {
-                                    param.Id = response.IdSalvo;
-                                    var table = $('#grid_cadastro').find('tbody'),
-                                        linha = criar_linha_grid(param);
 
-                                    table.append(linha);
-                                } else {
-                                    var linha = $('#grid_cadastro').find('tr[data-id=' + param.Id + ']').find('td');
-                                    linha
-                                        .eq(0).html(param.Nome).end()
-                                        .eq(1).html(param.Ativo ? 'Sim' : 'Não');
-                                }
-
-                                $('#modal_cadastro').parents('.bootbox').modal('hide');
-                            }
-                            else if (response.Resultado == 'erro') {
-                                $('#msg_erro').show();
-                                $('#msg_aviso').hide();
-                                $('#aviso').hide();
-                            }
-                            else if (response.Resultado == 'aviso') {
-                                $('#aviso').html(formatar_msg_avisos(response.Mensagens));
-                                $('#msg_erro').hide();
-                                $('#msg_aviso').show();
-                                $('#aviso').show();
-                            }
-                        });
+                bootbox.confirm({
+                    message: ('Realmente deseja excluir o item: <b>' + item + '</b> ?'),
+                    buttons: {
+                        confirm: {
+                            label: 'Sim',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Não',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function(result) {
+                        if (result) {
+                            //console.log('This was logged in the callback: ' + result);
+                            $.post(url,
+                                add_anti_forgery_token(param),
+                                function(response) {
+                                    if (response) {
+                                        tr.remove();
+                                    }
+                                });
+                        }
+                    }
                 });
+            })
+            .on('click', '#btn_salvar', function() {
+                var btn = $(this),
+                    url = '@Url.Action("SalvarDestinacaoBem", "Cadastro")',
+                    param = {
+                        Id: $('#cadastro_id').val(),
+                        Nome: $('#txt_nome').val(),
+                        Ativo: $('#cbx_ativo').prop('checked')
+                    };
+
+                $.post(url, add_anti_forgery_token(param), function(response) {
+                    if (response.Resultado == 'ok') {
+                        if (param.Id == 0) {
+                            param.Id = response.IdSalvo;
+                            var table = $('#grid_cadastro').find('tbody'),
+                                linha = criar_linha_grid(param);
+
+                            table.append(linha);
+                        } else {
+                            var linha = $('#grid_cadastro').find('tr[data-id=' + param.Id + ']').find('td');
+                            linha
+                                .eq(0).html(param.Nome).end()
+                                .eq(1).html(param.Ativo ? 'Sim' : 'Não');
+                        }
+
+                        $('#modal_cadastro').parents('.bootbox').modal('hide');
+                    }
+                    else if (response.Resultado == 'erro') {
+                        $('#msg_erro').show();
+                        $('#msg_aviso').hide();
+                        $('#aviso').hide();
+                    }
+                    else if (response.Resultado == 'aviso') {
+                        $('#aviso').html(formatar_msg_avisos(response.Mensagens));
+                        $('#msg_erro').hide();
+                        $('#msg_aviso').show();
+                        $('#aviso').show();
+                    }
+                });
+            });
     </script>
 }

@@ -21,6 +21,7 @@ namespace CBA.Web.Controllers
 
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult ListaDestinacaoBem(int id)
         {
             return Json(DestinacaoBemModel.RecuperarDestinacaoBem(id));
@@ -28,6 +29,7 @@ namespace CBA.Web.Controllers
 
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult ExcluirDestinacaoBem(int id)
         {
             return Json(DestinacaoBemModel.ExcluirDestinacaoBem(id));
@@ -35,6 +37,7 @@ namespace CBA.Web.Controllers
 
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult SalvarDestinacaoBem(DestinacaoBemModel obj)
         {
             var resultado = "ok";
