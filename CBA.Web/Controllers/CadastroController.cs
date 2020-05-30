@@ -8,19 +8,67 @@ namespace CBA.Web.Controllers
 {
     public class CadastroController : Controller
     {
-        private static List<DestinacaoBemModel> _ListaDestinacaoBem = new List<DestinacaoBemModel>()
+       // GET: Cadastro
+
+        //-------------------------------------------------------------------
+        //Destinação de Bens
+
+        [Authorize]
+        public ActionResult DestinacaoBem()
         {
-            new DestinacaoBemModel() {Id=1, Nome="Doação", Ativo=true},
-            new DestinacaoBemModel() {Id=2, Nome="Leilão", Ativo=true},
-            new DestinacaoBemModel() {Id=3, Nome="Destruição", Ativo=true},
-            new DestinacaoBemModel() {Id=4, Nome="Abandono", Ativo=true},
-            new DestinacaoBemModel() {Id=5, Nome="Deterioração", Ativo=true},
-            new DestinacaoBemModel() {Id=6, Nome="Pendente", Ativo=true},
-            new DestinacaoBemModel() {Id=7, Nome="Liberado", Ativo=true}
-        };
+            return View(DestinacaoBemModel.RecuperarDestinacaoBem());
+        }
 
+        [HttpPost]
+        [Authorize]
+        public ActionResult ListaDestinacaoBem(int id)
+        {
+            return Json(DestinacaoBemModel.RecuperarDestinacaoBem(id));
+        }
 
-        // GET: Cadastro
+        [HttpPost]
+        [Authorize]
+        public ActionResult ExcluirDestinacaoBem(int id)
+        {
+            return Json(DestinacaoBemModel.ExcluirDestinacaoBem(id));
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult SalvarDestinacaoBem(DestinacaoBemModel obj)
+        {
+            var resultado = "ok";
+            var mensagens = new List<string>();
+            var idSalvo = string.Empty;
+
+            if (!ModelState.IsValid)
+            {
+                resultado = "aviso";
+                mensagens = ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).ToList();
+            }
+            else
+            {
+                try
+                {
+                    var id = obj.SalvarDestinacaoBem();
+                    if (id > 0)
+                        idSalvo = id.ToString();
+                    
+                    else
+                        resultado = "erro";
+
+                }
+                catch (Exception ex)
+                {
+                    resultado = "erro";
+                    Console.WriteLine(ex);
+                    throw;
+                }
+            }
+            return Json(new { Resultado = resultado, Mensagens = mensagens, IdSalvo = idSalvo });
+        }
+
+        //-------------------------------------------------------------------
 
         [Authorize]
         public ActionResult UnidadeOrganizacional()
@@ -81,83 +129,6 @@ namespace CBA.Web.Controllers
         {
             return View();
         }
-
-        //-------------------------------------------------------------------
-        //Destinação de Bens
-
-        [Authorize]
-        public ActionResult DestinacaoBem()
-        {
-            return View(_ListaDestinacaoBem);
-        }
-
-        [HttpPost]
-        [Authorize]
-        public ActionResult SalvarDestinacaoBem(DestinacaoBemModel obj)
-        {
-            var resultado = "ok";
-            var mensagens = new List<string>();
-            var idSalvo = string.Empty;
-
-            if (!ModelState.IsValid)
-            {
-                resultado = "aviso";
-                mensagens = ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).ToList();
-            }
-            else
-            {
-                try
-                {
-                    var registroBD = _ListaDestinacaoBem.Find(x => x.Id == obj.Id);
-
-                    if (registroBD == null)
-                    {
-                        //incluir
-                        registroBD = obj;
-                        registroBD.Id = _ListaDestinacaoBem.Max(x => x.Id) + 1;
-                        _ListaDestinacaoBem.Add(registroBD);
-                    }
-                    else
-                    {
-                        //alterar
-                        registroBD.Nome = obj.Nome;
-                        registroBD.Ativo = obj.Ativo;
-                    }
-
-                    idSalvo = registroBD.Id.ToString();
-                }
-                catch (Exception ex)
-                {
-                    resultado = "erro";
-                    Console.WriteLine(ex);
-                    throw;
-                }
-            }
-            return Json(new {Resultado = resultado, Mensagens = mensagens, IdSalvo = idSalvo});
-        }
-
-        [HttpPost]
-        [Authorize]
-        public ActionResult ListaDestinacaoBem(int id)
-        {
-            return Json(_ListaDestinacaoBem.Find(x => x.Id == id));
-        }
-
-        [HttpPost]
-        [Authorize]
-        public ActionResult ExcluirDestinacaoBem(int id)
-        {
-            var ret = false;
-            var registroBD = _ListaDestinacaoBem.Find(x => x.Id == id);
-
-            if (registroBD != null)
-            {
-                _ListaDestinacaoBem.Remove(registroBD);
-                ret = true;
-            }
-            return Json(ret);
-        }
-
 
         //--------------------------------------------------------------------
 
