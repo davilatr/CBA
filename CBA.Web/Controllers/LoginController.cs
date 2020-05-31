@@ -1,6 +1,5 @@
 ﻿using CBA.Web.Models;
 using System.Web.Mvc;
-
 using System.Web.Security;
 
 namespace CBA.Web.Controllers
@@ -21,11 +20,11 @@ namespace CBA.Web.Controllers
             if (!ModelState.IsValid)
                 return View(login);
 
-            var achou = UsuarioModel.ValidarUsuario(login.Usuario, login.Senha);
+            var usuario = UsuarioModel.ValidarUsuario(login.Usuario, login.Senha);
 
-            if (achou)
+            if (usuario != null)
             {
-                FormsAuthentication.SetAuthCookie(login.Usuario, login.LembrarMe);
+                FormsAuthentication.SetAuthCookie(usuario.Nome, login.LembrarMe);
                 if (Url.IsLocalUrl(returnUrl))
                     return Redirect(returnUrl);
                 else
