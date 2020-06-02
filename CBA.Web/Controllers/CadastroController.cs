@@ -15,7 +15,15 @@ namespace CBA.Web.Controllers
         [Authorize]
         public ActionResult DestinacaoBem()
         {
-            return View(DestinacaoBemModel.RecuperarDestinacaoBem());
+            var lista = DestinacaoBemModel.RecuperarDestinacaoBem();
+            ViewBag.QtdeMaxLinhasPorPagina = 10;
+            ViewBag.PaginaAtual = 1;
+            ViewBag.QtdeDePaginas = (lista.Count / ViewBag.QtdeMaxLinhasPorPagina);
+            if (lista.Count % ViewBag.QtdeMaxLinhasPorPagina > 0)
+                ViewBag.QtdeDePaginas++;
+
+
+            return View(lista);
         }
 
         [HttpPost]

@@ -5,12 +5,12 @@ namespace CBA.Web.Models
 {
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "Informe o usuário")]
+        [Required(ErrorMessage = "O campo usuário é obrigatório ¯\\_(ツ)_ /¯")]
         [Display(Name = "Usuário:")]
         public string Usuario { get; set; }
 
 
-        [Required(ErrorMessage = "Informe a senha")]
+        [Required(ErrorMessage = "O campo senha é obrigatório ¯\\_(ツ)_/¯")]
         [DataType(DataType.Password)]
         [Display(Name = "Senha:")]
         public string Senha { get; set; }

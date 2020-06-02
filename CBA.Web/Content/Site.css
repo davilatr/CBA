@@ -1,4 +1,24 @@
-﻿body {
+﻿@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Bungee+Inline&family=Cinzel+Decorative:wght@400;700;900&family=Faster+One&family=Federant&family=Limelight&family=Miniver&family=Nova+Script&family=Playball&family=Racing+Sans+One&family=Revalia&family=Sarina&family=Warnes&display=swap');
+
+#sistema-titulo, #login-titulo, #footer-titulo {
+    /*font-family: 'Audiowide', cursive;*/
+
+    /*font-family: 'Bungee Inline', cursive;*/
+    /*font-family: 'Cinzel Decorative', cursive;*/
+    /*font-family: 'Faster One', cursive;*/
+    /*font-family: 'Federant', cursive;*/
+    /*font-family: 'Limelight', cursive;*/
+    /*font-family: 'Miniver', cursive;*/
+    /*font-family: 'Nova Script', cursive;*/
+    /*font-family: 'Playball', cursive;*/
+    font-family: 'Racing Sans One', cursive;
+    /*font-family: 'Revalia', cursive;*/
+    /*font-family: 'Sarina', cursive;*/
+    /*font-family: 'Warnes', cursive;*/
+}
+
+
+body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -26,7 +46,7 @@ textarea {
 #cadastro {
     width: 70%;
     margin: 0 auto;
-    white-space: nowrap; /** added **/
+    white-space: nowrap;
 }
 
 #grid_cadastro > thead > tr th:nth-child(2) {
@@ -35,4 +55,12 @@ textarea {
 
 #grid_cadastro > thead > tr th:nth-child(3) {
     width: 200px;
+}
+
+/*#login-password {
+    text-align: center;
+}*/
+
+#login-user, #login-password, #login-titulo {
+    text-align: center;
 }
