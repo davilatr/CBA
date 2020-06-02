@@ -161,6 +161,7 @@
     <Content Include="Scripts\bootstrap-select.min.js.map" />
     <Content Include="Scripts\bootstrap-select.js.map" />
     <Content Include="Content\bootstrap-select.css.map" />
+    <Content Include="fonts\RacingSansOne-Regular.ttf" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Images\ibama-logo.png" />
     <Content Include="Scripts\bootbox.js" />

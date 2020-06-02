@@ -8,7 +8,7 @@
         ViewBag.Title = "Início";
     }
     <title>Estelar - @ViewBag.Title</title>
-    <script src="https://kit.fontawesome.com/c7a389da7f.js" crossorigin="anonymous"></script>
+    @*<script src="https://kit.fontawesome.com/c7a389da7f.js" crossorigin="anonymous"></script>*@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @*@Scripts.Render("~/bundles/bootstrap")*@
@@ -103,9 +103,13 @@
         @RenderBody()
         <hr />
         <footer>
-            <div class="row">
+            <div class="row" style="position:relative">
+                <div class="col-md-6" style="height:58.41px; position: absolute; transform: translate(0%, 25%);">
                     &copy; @DateTime.Now.Year - <span id="footer-titulo">ESTELAR</span>
-                    <a class="pull-right" href="http://www.ibama.gov.br"><img style="width:50px" src="~/Images/ibama-logo.png" /></a>
+                </div>
+                <div class="col-md-6 col-md-offset-6 text-right">
+                    <a href="http://www.ibama.gov.br"><img src="~/Images/ibama-logo.png" /></a>
+                </div>
             </div>
         </footer>
     </div>

@@ -1,20 +1,11 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Bungee+Inline&family=Cinzel+Decorative:wght@400;700;900&family=Faster+One&family=Federant&family=Limelight&family=Miniver&family=Nova+Script&family=Playball&family=Racing+Sans+One&family=Revalia&family=Sarina&family=Warnes&display=swap');
+﻿@font-face {
+    font-family: 'RacingSansOne-Regular';
+    src: url('../fonts/RacingSansOne-Regular.ttf') format('truetype');
+}
 
 #sistema-titulo, #login-titulo, #footer-titulo {
-    /*font-family: 'Audiowide', cursive;*/
-
-    /*font-family: 'Bungee Inline', cursive;*/
-    /*font-family: 'Cinzel Decorative', cursive;*/
-    /*font-family: 'Faster One', cursive;*/
-    /*font-family: 'Federant', cursive;*/
-    /*font-family: 'Limelight', cursive;*/
-    /*font-family: 'Miniver', cursive;*/
-    /*font-family: 'Nova Script', cursive;*/
-    /*font-family: 'Playball', cursive;*/
     font-family: 'Racing Sans One', cursive;
-    /*font-family: 'Revalia', cursive;*/
-    /*font-family: 'Sarina', cursive;*/
-    /*font-family: 'Warnes', cursive;*/
+   
 }
 
 
