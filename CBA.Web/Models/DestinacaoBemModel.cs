@@ -19,10 +19,27 @@ namespace CBA.Web.Models
 
 
 
-        //-------------------------------------------------------------------
-        //Métodos
+        public static int RecuperarDestinacaoBemQtde()
+        {
+            var retorno = 0;
 
-        public static List<DestinacaoBemModel> RecuperarDestinacaoBem()
+            using (var conexao = new SqlConnection())
+            {
+                conexao.ConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
+                conexao.Open();
+                using (var comando = new SqlCommand())
+                {
+                    
+                    comando.Connection = conexao;
+                    comando.CommandText = "select count(*) from tipo_destinacao";
+                    retorno = (int)comando.ExecuteScalar();
+                    
+                }
+            }
+            return retorno;
+        }
+
+        public static List<DestinacaoBemModel> RecuperarDestinacaoBem(int pag, int tamPag)
         {
             var retorno = new List<DestinacaoBemModel>();
 
@@ -32,8 +49,11 @@ namespace CBA.Web.Models
                 conexao.Open();
                 using (var comando = new SqlCommand())
                 {
+                    var pos = ((pag - 1) * tamPag)+1;
                     comando.Connection = conexao;
-                    comando.CommandText = "select * from tipo_destinacao order by tipo_destinacao_nome";
+                    comando.CommandText = string.Format(
+                        "select * from tipo_destinacao order by tipo_destinacao_nome offset {0} rows fetch next {1} rows only",
+                        pos > 0 ? pos - 1 : 0, tamPag);
                     var reader = comando.ExecuteReader();
                     while (reader.Read())
                     {
@@ -122,7 +142,7 @@ namespace CBA.Web.Models
                         comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.Nome;
                         comando.Parameters.Add("@ativo", SqlDbType.Bit).Value = this.Ativo ? 1 : 0;
 
-                        comando.CommandText = 
+                        comando.CommandText =
                             "insert into tipo_destinacao (tipo_destinacao_nome, tipo_destinacao_ativo) values (@nome, @ativo); select convert(int, scope_identity())";
                         retorno = (int)comando.ExecuteScalar();
                     }

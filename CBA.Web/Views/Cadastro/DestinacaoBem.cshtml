@@ -57,10 +57,10 @@
                 <div class="col-md-12 text-center">
                     <nav aria-label="Page navigation">
                         <ul class="pagination">
-                            <li class="active"><a href="#">1</a></li>
+                            <li class="active num_pag"><a href="#">1</a></li>
                             @for (int i = 2; i <= ViewBag.QtdeDePaginas; i++)
                             {
-                                <li class=""><a class="" href="#">@i</a></li>
+                                <li class="num_pag"><a class="" href="#">@i</a></li>
                             }
                         </ul>
                     </nav>
@@ -165,10 +165,10 @@
         }
 
         $(document)
-            .on('click', '#btn_incluir', function() {
+            .on('click', '#btn_incluir', function () {
                 abrir_modal({ Id: 0, Nome: '', Ativo: true });
             })
-            .on('click', '#btn_alterar', function() {
+            .on('click', '#btn_alterar', function () {
                 var btn = $(this),
                     id = btn.closest('tr').attr('data-id'),
                     url = '@Url.Action("ListaDestinacaoBem", "Cadastro")',
@@ -176,13 +176,13 @@
 
                 $.post(url,
                     add_anti_forgery_token(param),
-                    function(response) {
+                    function (response) {
                         if (response) {
                             abrir_modal(response);
                         }
                     });
             })
-            .on('click', '#btn_excluir', function() {
+            .on('click', '#btn_excluir', function () {
                 var
                     btn = $(this),
                     tr = btn.closest('tr'),
@@ -205,12 +205,12 @@
                             className: 'btn-success'
                         }
                     },
-                    callback: function(result) {
+                    callback: function (result) {
                         if (result) {
                             //console.log('This was logged in the callback: ' + result);
                             $.post(url,
                                 add_anti_forgery_token(param),
-                                function(response) {
+                                function (response) {
                                     if (response) {
                                         tr.remove();
                                     }
@@ -219,7 +219,7 @@
                     }
                 });
             })
-            .on('click', '#btn_salvar', function() {
+            .on('click', '#btn_salvar', function () {
                 var btn = $(this),
                     url = '@Url.Action("SalvarDestinacaoBem", "Cadastro")',
                     param = {
@@ -228,7 +228,7 @@
                         Ativo: $('#cbx_ativo').prop('checked')
                     };
 
-                $.post(url, add_anti_forgery_token(param), function(response) {
+                $.post(url, add_anti_forgery_token(param), function (response) {
                     if (response.Resultado == 'ok') {
                         if (param.Id == 0) {
                             param.Id = response.IdSalvo;
@@ -255,6 +255,24 @@
                         $('#msg_erro').hide();
                         $('#msg_aviso').show();
                         $('#aviso').show();
+                    }
+                });
+            })
+            .on('click', '.num_pag', function () {
+                var btn = $(this),
+                    pagina = btn.text(),
+                    url = '@Url.Action("DestinacaoBemPaginacao", "Cadastro")';
+
+                $.post(url, add_anti_forgery_token({ pagina }), function (response) {
+                    if (response) {
+                        var table = $('#grid_cadastro').find('tbody');
+                        table.empty();
+
+                        for (var i = 0; i < response.length; i++) {
+                            table.append(criar_linha_grid(response[i]));
+                        }
+                        btn.siblings().removeClass('active');
+                        btn.addClass('active');
                     }
                 });
             });

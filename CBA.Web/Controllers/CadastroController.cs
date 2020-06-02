@@ -12,14 +12,19 @@ namespace CBA.Web.Controllers
 
         #region Tipos de Destinação de Bens
         
+        private const int _qtdeMaxLinhasPorPagina = 10;
+
         [Authorize]
         public ActionResult DestinacaoBem()
         {
-            var lista = DestinacaoBemModel.RecuperarDestinacaoBem();
-            ViewBag.QtdeMaxLinhasPorPagina = 10;
+            ViewBag.QtdeMaxLinhasPorPagina = _qtdeMaxLinhasPorPagina;
             ViewBag.PaginaAtual = 1;
-            ViewBag.QtdeDePaginas = (lista.Count / ViewBag.QtdeMaxLinhasPorPagina);
-            if (lista.Count % ViewBag.QtdeMaxLinhasPorPagina > 0)
+            var lista = DestinacaoBemModel.RecuperarDestinacaoBem(ViewBag.PaginaAtual, _qtdeMaxLinhasPorPagina);
+            var qtdeReg = DestinacaoBemModel.RecuperarDestinacaoBemQtde();
+
+
+            ViewBag.QtdeDePaginas = (qtdeReg / ViewBag.QtdeMaxLinhasPorPagina);
+            if (qtdeReg % ViewBag.QtdeMaxLinhasPorPagina > 0)
                 ViewBag.QtdeDePaginas++;
 
 
@@ -29,7 +34,16 @@ namespace CBA.Web.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult ListaDestinacaoBem(int id)
+        public JsonResult DestinacaoBemPaginacao(int pagina)
+        {
+            var lista = DestinacaoBemModel.RecuperarDestinacaoBem(pagina, _qtdeMaxLinhasPorPagina);
+            return Json(lista);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public JsonResult ListaDestinacaoBem(int id)
         {
             return Json(DestinacaoBemModel.RecuperarDestinacaoBem(id));
         }
@@ -37,7 +51,7 @@ namespace CBA.Web.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult ExcluirDestinacaoBem(int id)
+        public JsonResult ExcluirDestinacaoBem(int id)
         {
             return Json(DestinacaoBemModel.ExcluirDestinacaoBem(id));
         }
@@ -45,7 +59,7 @@ namespace CBA.Web.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult SalvarDestinacaoBem(DestinacaoBemModel obj)
+        public JsonResult SalvarDestinacaoBem(DestinacaoBemModel obj)
         {
             var resultado = "ok";
             var mensagens = new List<string>();
