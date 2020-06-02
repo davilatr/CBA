@@ -3,7 +3,7 @@
     ViewBag.Title = "Cadastro de Destinações de Bens";
     ViewBag.Modal = "Destinações de Bens";
 }
-
+<link href="~/Content/bootstrap-select.min.css" rel="stylesheet" />
 <div id="cadastro">
     <section class="text-center" id="cadastro_cabecalho">
         <h1>@ViewBag.Title</h1>
@@ -50,6 +50,9 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="row">
+            @Html.DropDownList("ddl_qtdeMaxLinhasPorPagina", (SelectList)ViewBag.ListaTamPag, new { @class = "selectpicker" })
         </div>
         @if (ViewBag.QtdeDePaginas > 1)
         {
@@ -101,6 +104,7 @@
 </div>
 
 @section Scripts{
+    <script src="~/Scripts/bootstrap-select.min.js"></script>
     <script>
         function add_anti_forgery_token(data) {
             data.__RequestVerificationToken = $('[name=__RequestVerificationToken]').val();
@@ -171,7 +175,7 @@
             .on('click', '#btn_alterar', function () {
                 var btn = $(this),
                     id = btn.closest('tr').attr('data-id'),
-                    url = '@Url.Action("ListaDestinacaoBem", "Cadastro")',
+                    url = '@Url.Action("ListaDestinacaoBem", "DestinacaoBem")',
                     param = { 'id': id };
 
                 $.post(url,
@@ -189,7 +193,7 @@
                     id = tr.attr('data-id'),
                     //item = $('#grid_cadastro').find('tr[data-id=' + id + ']').find('td:first-child').text(),
                     item = tr.find('td:first-child').text(),
-                    url = '@Url.Action("ExcluirDestinacaoBem", "Cadastro")',
+                    url = '@Url.Action("ExcluirDestinacaoBem", "DestinacaoBem")',
                     param = { 'id': id };
 
 
@@ -221,7 +225,7 @@
             })
             .on('click', '#btn_salvar', function () {
                 var btn = $(this),
-                    url = '@Url.Action("SalvarDestinacaoBem", "Cadastro")',
+                    url = '@Url.Action("SalvarDestinacaoBem", "DestinacaoBem")',
                     param = {
                         Id: $('#cadastro_id').val(),
                         Nome: $('#txt_nome').val(),
@@ -260,10 +264,32 @@
             })
             .on('click', '.num_pag', function () {
                 var btn = $(this),
+                    tamPag = $('#ddl_qtdeMaxLinhasPorPagina').val(),
                     pagina = btn.text(),
-                    url = '@Url.Action("DestinacaoBemPaginacao", "Cadastro")';
+                    url = '@Url.Action("DestinacaoBemPaginacao", "DestinacaoBem")',
+                    param = { 'pagina': pagina, 'tamPag': tamPag };
 
-                $.post(url, add_anti_forgery_token({ pagina }), function (response) {
+                $.post(url, add_anti_forgery_token(param), function (response) {
+                    if (response) {
+                        var table = $('#grid_cadastro').find('tbody');
+                        table.empty();
+
+                        for (var i = 0; i < response.length; i++) {
+                            table.append(criar_linha_grid(response[i]));
+                        }
+                        btn.siblings().removeClass('active');
+                        btn.addClass('active');
+                    }
+                });
+            })
+            .on('change', '#ddl_qtdeMaxLinhasPorPagina', function () {
+                var ddl = $(this),
+                    tamPag = ddl.val(),
+                    pagina = 1,
+                    url = '@Url.Action("DestinacaoBemPaginacao", "DestinacaoBem")',
+                    param = { 'pagina': pagina, 'tamPag': tamPag };
+
+                $.post(url, add_anti_forgery_token(param), function (response) {
                     if (response) {
                         var table = $('#grid_cadastro').find('tbody');
                         table.empty();
