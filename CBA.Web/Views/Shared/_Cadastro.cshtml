@@ -1,0 +1,81 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model List<CBA.Web.Models.DestinacaoBemModel>
+@{
+    ViewBag.Title = "Cadastro de Destinações de Bens";
+    ViewBag.Modal = "Destinações de Bens";
+}
+
+@RenderSection("Styles", true)
+@RenderBody()
+<link href="~/Content/bootstrap-select.min.css" rel="stylesheet" />
+<div id="cadastro">
+    <section class="text-center" id="cadastro_cabecalho">
+        <h1>@ViewBag.Title</h1>
+    </section>
+    <hr />
+    <section id="cadastro_conteudo">
+        <div class="row" id="grid_cabecalho">
+            <a id="btn_incluir" class="btn btn-success" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Incluir</a>
+        </div>
+        <br />
+        <div class="row">
+            <div class="table-responsive">
+                <table id="grid_cadastro" class="table table-bordered table-hover table-condensed" data-toggle="table">
+                    <thead class="">
+                        <tr>
+                            @RenderSection("TituloGrid", true)
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @RenderSection("ConteudoGrid", true)
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            @Html.DropDownList("ddl_qtdeMaxLinhasPorPagina", (SelectList)ViewBag.ListaTamPag, new { @class = "selectpicker" })
+        </div>
+        @if (ViewBag.QtdeDePaginas > 1)
+        {
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <li class="active num_pag"><a href="#">1</a></li>
+                            @for (int i = 2; i <= ViewBag.QtdeDePaginas; i++)
+                            {
+                                <li class="num_pag"><a class="" href="#">@i</a></li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        }
+    </section>
+</div>
+
+@Html.Hidden("cadastro_id")
+<div id="modal_cadastro" class="collapse" role="dialog">
+    <div class="text-danger collapse" id="aviso"></div>
+    <fieldset>
+        @Html.AntiForgeryToken()
+
+        @RenderSection("ModalCadastro", true)
+
+        <div class="form-group">
+            <div class="modal-footer">
+                <a id="btn_sair" class="btn btn-default" aria-hidden="true" role="button" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Sair</a>
+                <a id="btn_salvar" class="btn btn-primary" aria-hidden="true" role="button"><span class="glyphicon glyphicon-ok"></span> Salvar</a>
+            </div>
+            <div id="msg_erro" class="alert alert-danger collapse">Ops! Deu ruim!</div>
+            <div id="msg_aviso" class="alert alert-warning collapse">É necessário preencher os campos acima.</div>
+        </div>
+    </fieldset>
+</div>
+
+@section Scripts{
+    @RenderSection("Scripts", true)
+}

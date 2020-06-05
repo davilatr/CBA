@@ -1,306 +1,72 @@
 ﻿@model List<CBA.Web.Models.DestinacaoBemModel>
 @{
+    Layout = "~/Views/Shared/_Cadastro.cshtml";
     ViewBag.Title = "Cadastro de Destinações de Bens";
     ViewBag.Modal = "Destinações de Bens";
 }
-<link href="~/Content/bootstrap-select.min.css" rel="stylesheet" />
-<div id="cadastro">
-    <section class="text-center" id="cadastro_cabecalho">
-        <h1>@ViewBag.Title</h1>
-    </section>
-    <hr />
-    <section id="cadastro_conteudo">
-        <div class="row" id="grid_cabecalho">
-            <a id="btn_incluir" class="btn btn-success" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Incluir</a>
-        </div>
-        <br />
-        <div class="row">
-            <div class="table-responsive">
-                <table id="grid_cadastro" class="table table-bordered table-hover table-condensed" data-toggle="table">
-                    <thead class="">
-                        <tr>
-                            <th scope="col">Nome</th>
-                            <th scope="col">Ativo</th>
-                            <th scope="col">Ação</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            var linha = 0;
-                            foreach (var item in Model)
-                            {
-                                linha++;
-                                if (linha <= ViewBag.QtdeMaxLinhasPorPagina)
-                                {
-                                    <tr data-id="@item.Id">
-                                        <td nome="@item.Nome">@item.Nome</td>
-                                        <td>@{var ativo = (item.Ativo ? "Sim" : "Não");}@ativo</td>
-                                        <td>
-                                            <a id="btn_alterar" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Alterar</a>
-                                            <a id="btn_excluir" class="btn btn-danger" role="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Excluir</a>
-                                        </td>
-                                    </tr>
-                                }
-                                else
-                                {
-                                    break;
-                                }
-                            }
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            @Html.DropDownList("ddl_qtdeMaxLinhasPorPagina", (SelectList)ViewBag.ListaTamPag, new { @class = "selectpicker" })
-        </div>
-        @if (ViewBag.QtdeDePaginas > 1)
-        {
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination">
-                            <li class="active num_pag"><a href="#">1</a></li>
-                            @for (int i = 2; i <= ViewBag.QtdeDePaginas; i++)
-                            {
-                                <li class="num_pag"><a class="" href="#">@i</a></li>
-                            }
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        }
-    </section>
-</div>
+@section Styles{
+    <link href="~/Content/bootstrap-select.min.css" rel="stylesheet" />
+}
 
-@Html.Hidden("cadastro_id")
-<div id="modal_cadastro" class="collapse" role="dialog">
-    <div class="text-danger collapse" id="aviso"></div>
-    <fieldset>
-        @Html.AntiForgeryToken()
-        <div class="">
-            <div class="form-group">
-                @Html.Label("txt_nome", "Nome", new { @class = "col-md-3 control-label" })
-                <div class="">
-                    @Html.TextBox("txt_nome", null, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.Label("cbx_ativo", "Ativo", new { @class = "col-md-3 control-label" })
-                <div class="">
-                    @Html.CheckBox("cbx_ativo")
-                </div>
+@section TituloGrid {
+    <th scope="col">Nome</th>
+    <th scope="col">Ativo</th>
+    <th scope="col">Ação</th>
+}
+@section ConteudoGrid{
+    @{
+        var linha = 0;
+        foreach (var item in Model)
+        {
+            linha++;
+            if (linha <= ViewBag.QtdeMaxLinhasPorPagina)
+            {
+                <tr data-id="@item.Id">
+                    <td nome="@item.Nome">@item.Nome</td>
+                    <td>@{var ativo = (item.Ativo ? "Sim" : "Não");}@ativo</td>
+                    <td>
+                        <a id="btn_alterar" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Alterar</a>
+                        <a id="btn_excluir" class="btn btn-danger" role="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Excluir</a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+}
+
+@section ModalCadastro{
+    <div class="">
+        <div class="form-group">
+            @Html.Label("txt_nome", "Nome", new { @class = "col-md-3 control-label" })
+            <div class="">
+                @Html.TextBox("txt_nome", null, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">
-            <div class="modal-footer">
-                <a id="btn_sair" class="btn btn-default" aria-hidden="true" role="button" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Sair</a>
-                <a id="btn_salvar" class="btn btn-primary" aria-hidden="true" role="button"><span class="glyphicon glyphicon-ok"></span> Salvar</a>
+            @Html.Label("cbx_ativo", "Ativo", new { @class = "col-md-3 control-label" })
+            <div class="">
+                @Html.CheckBox("cbx_ativo")
             </div>
-            <div id="msg_erro" class="alert alert-danger collapse">Ops! Deu ruim!</div>
-            <div id="msg_aviso" class="alert alert-warning collapse">É necessário preencher os campos acima.</div>
         </div>
-    </fieldset>
-</div>
+    </div>
+}
+
 
 @section Scripts{
     <script src="~/Scripts/bootstrap-select.min.js"></script>
+
     <script>
-        function add_anti_forgery_token(data) {
-            data.__RequestVerificationToken = $('[name=__RequestVerificationToken]').val();
-            return data;
-        }
-
-        function abrir_modal(dados) {
-            $('#cadastro_id').val(dados.Id);
-            $('#txt_nome').val(dados.Nome);
-            $('#cbx_ativo').prop('checked', dados.Ativo);
-
-            var modalCadastro = $('#modal_cadastro');
-
-            $('#aviso').empty();
-            $('#aviso').hide();
-            $('#msg_erro').hide();
-            $('#msg_aviso').hide();
-
-            bootbox.dialog({
-                    title: '@ViewBag.Modal',
-                    message: modalCadastro
-                })
-                .on('shown.bs.modal',
-                    function() {
-                        modalCadastro.show(0,
-                            function() {
-                                $('#txt_nome').focus();
-                            });
-                    })
-                .on('hidden.bs.modal',
-                    function() {
-                        modalCadastro.hide().appendTo('body');
-                    });
-        }
-
-        function criar_linha_grid(dados) {
-            var ret =
-                '<tr data-id=' +
-                    dados.Id +
-                    '>' +
-                    '<td>' +
-                    dados.Nome +
-                    '</td>' +
-                    '<td>' +
-                    (dados.Ativo ? 'Sim' : 'Não') +
-                    '</td>' +
-                    '<td>' +
-                    '<a id="btn_alterar" class="btn btn-primary" role="button" style="margin-right: 3px"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Alterar</a>' +
-                    '<a id="btn_excluir" class="btn btn-danger" role="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Excluir</a>' +
-                    '</td>' +
-                    '</tr>';
-
-            return ret;
-        }
-
-        function formatar_msg_avisos(mensagens) {
-            var ret = '';
-
-            for (var i = 0; i < mensagens.length; i++)
-                ret += '<li>' + mensagens[i] + '</li>';
-            return '<ul>' + ret + '</ul>';
-        }
-
-        $(document)
-            .on('click', '#btn_incluir', function () {
-                abrir_modal({ Id: 0, Nome: '', Ativo: true });
-            })
-            .on('click', '#btn_alterar', function () {
-                var btn = $(this),
-                    id = btn.closest('tr').attr('data-id'),
-                    url = '@Url.Action("ListaDestinacaoBem", "DestinacaoBem")',
-                    param = { 'id': id };
-
-                $.post(url,
-                    add_anti_forgery_token(param),
-                    function (response) {
-                        if (response) {
-                            abrir_modal(response);
-                        }
-                    });
-            })
-            .on('click', '#btn_excluir', function () {
-                var
-                    btn = $(this),
-                    tr = btn.closest('tr'),
-                    id = tr.attr('data-id'),
-                    //item = $('#grid_cadastro').find('tr[data-id=' + id + ']').find('td:first-child').text(),
-                    item = tr.find('td:first-child').text(),
-                    url = '@Url.Action("ExcluirDestinacaoBem", "DestinacaoBem")',
-                    param = { 'id': id };
-
-
-                bootbox.confirm({
-                    message: ('Realmente deseja excluir o item: <b>' + item + '</b> ?'),
-                    buttons: {
-                        confirm: {
-                            label: 'Sim',
-                            className: 'btn-danger'
-                        },
-                        cancel: {
-                            label: 'Não',
-                            className: 'btn-success'
-                        }
-                    },
-                    callback: function (result) {
-                        if (result) {
-                            //console.log('This was logged in the callback: ' + result);
-                            $.post(url,
-                                add_anti_forgery_token(param),
-                                function (response) {
-                                    if (response) {
-                                        tr.remove();
-                                    }
-                                });
-                        }
-                    }
-                });
-            })
-            .on('click', '#btn_salvar', function () {
-                var btn = $(this),
-                    url = '@Url.Action("SalvarDestinacaoBem", "DestinacaoBem")',
-                    param = {
-                        Id: $('#cadastro_id').val(),
-                        Nome: $('#txt_nome').val(),
-                        Ativo: $('#cbx_ativo').prop('checked')
-                    };
-
-                $.post(url, add_anti_forgery_token(param), function (response) {
-                    if (response.Resultado == 'ok') {
-                        if (param.Id == 0) {
-                            param.Id = response.IdSalvo;
-                            var table = $('#grid_cadastro').find('tbody'),
-                                linha = criar_linha_grid(param);
-
-                            table.append(linha);
-                        } else {
-                            var linha = $('#grid_cadastro').find('tr[data-id=' + param.Id + ']').find('td');
-                            linha
-                                .eq(0).html(param.Nome).end()
-                                .eq(1).html(param.Ativo ? 'Sim' : 'Não');
-                        }
-
-                        $('#modal_cadastro').parents('.bootbox').modal('hide');
-                    }
-                    else if (response.Resultado == 'erro') {
-                        $('#msg_erro').show();
-                        $('#msg_aviso').hide();
-                        $('#aviso').hide();
-                    }
-                    else if (response.Resultado == 'aviso') {
-                        $('#aviso').html(formatar_msg_avisos(response.Mensagens));
-                        $('#msg_erro').hide();
-                        $('#msg_aviso').show();
-                        $('#aviso').show();
-                    }
-                });
-            })
-            .on('click', '.num_pag', function () {
-                var btn = $(this),
-                    tamPag = $('#ddl_qtdeMaxLinhasPorPagina').val(),
-                    pagina = btn.text(),
-                    url = '@Url.Action("DestinacaoBemPaginacao", "DestinacaoBem")',
-                    param = { 'pagina': pagina, 'tamPag': tamPag };
-
-                $.post(url, add_anti_forgery_token(param), function (response) {
-                    if (response) {
-                        var table = $('#grid_cadastro').find('tbody');
-                        table.empty();
-
-                        for (var i = 0; i < response.length; i++) {
-                            table.append(criar_linha_grid(response[i]));
-                        }
-                        btn.siblings().removeClass('active');
-                        btn.addClass('active');
-                    }
-                });
-            })
-            .on('change', '#ddl_qtdeMaxLinhasPorPagina', function () {
-                var ddl = $(this),
-                    tamPag = ddl.val(),
-                    pagina = 1,
-                    url = '@Url.Action("DestinacaoBemPaginacao", "DestinacaoBem")',
-                    param = { 'pagina': pagina, 'tamPag': tamPag };
-
-                $.post(url, add_anti_forgery_token(param), function (response) {
-                    if (response) {
-                        var table = $('#grid_cadastro').find('tbody');
-                        table.empty();
-
-                        for (var i = 0; i < response.length; i++) {
-                            table.append(criar_linha_grid(response[i]));
-                        }
-                        btn.siblings().removeClass('active');
-                        btn.addClass('active');
-                    }
-                });
-            });
+        var tituloModal = '@ViewBag.Modal',
+            url_alterar = '@Url.Action("ListaDestinacaoBem", "DestinacaoBem")',
+            url_excluir = '@Url.Action("ExcluirDestinacaoBem", "DestinacaoBem")',
+            url_salvar = '@Url.Action("SalvarDestinacaoBem", "DestinacaoBem")',
+            url_paginacao_click = '@Url.Action("DestinacaoBemPaginacao", "DestinacaoBem")',
+            url_tam_paginacao_change = '@Url.Action("DestinacaoBemPaginacao", "DestinacaoBem")';
     </script>
+    <script src="~/Scripts/Cadastro/DestinacaoBem.js"></script>
+
 }
