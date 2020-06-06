@@ -59,10 +59,11 @@ $(document)
             url = url_alterar,
             param = { 'id': id };
 
-        $.post(url,
-            add_anti_forgery_token(param),
-            function (response) {
-                if (response) {
+        $.post(url, add_anti_forgery_token(param), function (response) {
+            if (response) {
+                if (_senhaPadrao)
+                    response.Senha = _senhaPadrao;
+                    
                     abrir_modal(response);
                 }
             });
