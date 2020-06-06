@@ -1,7 +1,7 @@
 ﻿@model List<CBA.Web.Models.DestinacaoBemModel>
 @{
     Layout = "~/Views/Shared/_Cadastro.cshtml";
-    ViewBag.Title = "Cadastro de Destinações de Bens";
+    ViewBag.Title = "Destinações de Bens";
     ViewBag.Modal = "Destinações de Bens";
 }
 @section Styles{
@@ -64,8 +64,8 @@
             url_alterar = '@Url.Action("ListaDestinacaoBem", "DestinacaoBem")',
             url_excluir = '@Url.Action("ExcluirDestinacaoBem", "DestinacaoBem")',
             url_salvar = '@Url.Action("SalvarDestinacaoBem", "DestinacaoBem")',
-            url_paginacao_click = '@Url.Action("DestinacaoBemPaginacao", "DestinacaoBem")',
-            url_tam_paginacao_change = '@Url.Action("DestinacaoBemPaginacao", "DestinacaoBem")';
+            url_paginacao_click = '@Url.Action("PaginacaoDestinacaoBem", "DestinacaoBem")',
+            url_tam_paginacao_change = '@Url.Action("PaginacaoDestinacaoBem", "DestinacaoBem")';
     </script>
     <script src="~/Scripts/Cadastro/DestinacaoBem.js"></script>
 

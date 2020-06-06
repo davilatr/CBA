@@ -9,18 +9,41 @@ namespace CBA.Web.Controllers
     public class UsuarioController : Controller
     {
         private const int _qtdeMaxLinhasPorPagina = 10;
+        private const string _senhaPadrao = "{EsTeLaR}";
 
         // GET: Cadastro
 
         #region Usuarios do Sistema
 
-        private const string _senhaPadrao = "{EsTeLaR}";
+
 
         [Authorize]
-        public ActionResult Usuario()
+        public ActionResult Index()
         {
+            ViewBag.ListaTamPag = new SelectList(new int[] { _qtdeMaxLinhasPorPagina, 20, 30 }, _qtdeMaxLinhasPorPagina);
+            ViewBag.QtdeMaxLinhasPorPagina = _qtdeMaxLinhasPorPagina;
+            ViewBag.PaginaAtual = 1;
             ViewBag.SenhaPadrao = _senhaPadrao;
-            return View(UsuarioModel.RecuperarUsuario());
+
+            var lista = UsuarioModel.RecuperarUsuario(ViewBag.PaginaAtual, _qtdeMaxLinhasPorPagina);
+            var qtdeReg = UsuarioModel.RecuperarUsuarioQtde();
+
+            ViewBag.QtdeDePaginas = (qtdeReg / ViewBag.QtdeMaxLinhasPorPagina);
+            if (qtdeReg % ViewBag.QtdeMaxLinhasPorPagina > 0)
+                ViewBag.QtdeDePaginas++;
+
+
+            return View(lista);
+
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public JsonResult PaginacaoUsuario(int pagina, int tamPag)
+        {
+            var lista = UsuarioModel.RecuperarUsuario(pagina, tamPag);
+            return Json(lista);
         }
 
         [HttpPost]
@@ -68,7 +91,7 @@ namespace CBA.Web.Controllers
                         resultado = "erro";
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     resultado = "erro";
                 }
@@ -78,6 +101,6 @@ namespace CBA.Web.Controllers
 
         #endregion
 
-        
+
     }
 }

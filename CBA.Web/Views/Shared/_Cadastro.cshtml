@@ -1,12 +1,8 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Cadastro de "+ ViewBag.Title;
 }
 
-@model List<CBA.Web.Models.DestinacaoBemModel>
-@{
-    ViewBag.Title = "Cadastro de Destinações de Bens";
-    ViewBag.Modal = "Destinações de Bens";
-}
 
 @RenderSection("Styles", true)
 @RenderBody()
@@ -44,7 +40,7 @@
                 <div class="col-md-12 text-center">
                     <nav aria-label="Page navigation">
                         <ul class="pagination">
-                            <li class="active num_pag"><a href="#">1</a></li>
+                            <li class="num_pag active"><a href="#">1</a></li>
                             @for (int i = 2; i <= ViewBag.QtdeDePaginas; i++)
                             {
                                 <li class="num_pag"><a class="" href="#">@i</a></li>
@@ -77,5 +73,6 @@
 </div>
 
 @section Scripts{
+    <script src="~/Scripts/Cadastro/Cadastro.js"></script>
     @RenderSection("Scripts", true)
 }
