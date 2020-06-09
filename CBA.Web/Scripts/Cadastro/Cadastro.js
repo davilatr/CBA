@@ -61,12 +61,13 @@ $(document)
 
         $.post(url, add_anti_forgery_token(param), function (response) {
             if (response) {
-                if (_senhaPadrao)
-                    response.Senha = _senhaPadrao;
-                    
-                    abrir_modal(response);
-                }
-            });
+                if (url_alterar.includes('Usuario/ListaUsuario'))
+                    if (_senhaPadrao)
+                        response.Senha = _senhaPadrao;
+
+                abrir_modal(response);
+            }
+        });
     })
     .on('click', '#btn_excluir', function () {
         var

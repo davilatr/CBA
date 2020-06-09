@@ -5,7 +5,6 @@
 
 #sistema-titulo, #login-titulo, #footer-titulo {
     font-family: 'Racing Sans One', cursive;
-   
 }
 
 
@@ -44,9 +43,16 @@ textarea {
     width: 10%;
 }
 
+
 #grid_cadastro > thead > tr th:nth-child(3) {
-    width: 200px;
+    width: 180px;
 }
+
+#grid_cadastro > thead > tr th:nth-child(4) {
+    width: 180px;
+}
+
+
 
 /*#login-password {
     text-align: center;

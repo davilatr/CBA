@@ -123,6 +123,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CadastroController.cs" />
+    <Compile Include="Controllers\Cadastro\UnidadeMedidaController.cs" />
     <Compile Include="Controllers\Cadastro\UsuarioController.cs" />
     <Compile Include="Controllers\Cadastro\DestinacaoBemController.cs" />
     <Compile Include="Controllers\GraficoController.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="Helpers\CriptoHelper.cs" />
     <Compile Include="Models\DestinacaoBemModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Models\UnidadeMedidaModel.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -171,6 +173,7 @@
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\Cadastro\Cadastro.js" />
+    <Content Include="Scripts\Cadastro\UnidadeMedida.js" />
     <Content Include="Scripts\Cadastro\DestinacaoBem.js" />
     <Content Include="Scripts\Cadastro\Usuario.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
@@ -226,6 +229,7 @@
     <Content Include="Views\Relatorio\QtdeBem.cshtml" />
     <Content Include="Views\Relatorio\QtdeBemDestinado.cshtml" />
     <Content Include="Views\Shared\_Cadastro.cshtml" />
+    <Content Include="Views\UnidadeMedida\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
