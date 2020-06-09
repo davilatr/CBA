@@ -6,15 +6,14 @@ using System.Web.Mvc;
 
 namespace CBA.Web.Controllers
 {
+    [Authorize(Roles ="Gerente,Operador,Administrador")]
     public class DestinacaoBemController : Controller
     {
         private const int _qtdeMaxLinhasPorPagina = 10;
 
         // GET: Cadastro
 
-        #region Tipos de Destinação de Bens
-
-        [Authorize]
+        
         public ActionResult Index()
         {
             ViewBag.ListaTamPag = new SelectList(new int[] { _qtdeMaxLinhasPorPagina, 20, 30 }, _qtdeMaxLinhasPorPagina);
@@ -33,7 +32,6 @@ namespace CBA.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public JsonResult PaginacaoDestinacaoBem(int pagina, int tamPag)
         {
@@ -42,7 +40,6 @@ namespace CBA.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public JsonResult ListaDestinacaoBem(int id)
         {
@@ -50,7 +47,7 @@ namespace CBA.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [ValidateAntiForgeryToken]
         public JsonResult ExcluirDestinacaoBem(int id)
         {
@@ -58,7 +55,7 @@ namespace CBA.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [ValidateAntiForgeryToken]
         public JsonResult SalvarDestinacaoBem(DestinacaoBemModel obj)
         {
@@ -92,8 +89,6 @@ namespace CBA.Web.Controllers
             }
             return Json(new { Resultado = resultado, Mensagens = mensagens, IdSalvo = idSalvo });
         }
-
-        #endregion
 
         
     }
