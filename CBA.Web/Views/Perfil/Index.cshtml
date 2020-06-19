@@ -1,0 +1,72 @@
+﻿@model List<CBA.Web.Models.PerfilModel>
+@{
+    Layout = "~/Views/Shared/_Cadastro.cshtml";
+    ViewBag.Title = "Perfil de Usuário";
+    ViewBag.Modal = "Perfil de Usuário";
+}
+@section Styles{
+    <link href="~/Content/bootstrap-select.min.css" rel="stylesheet" />
+}
+
+@section TituloGrid {
+    <th scope="col">Nome</th>
+    <th scope="col">Ativo</th>
+    <th scope="col">Ação</th>
+}
+@section ConteudoGrid{
+    @{
+        var linha = 0;
+        foreach (var item in Model)
+        {
+            linha++;
+            if (linha <= ViewBag.QtdeMaxLinhasPorPagina)
+            {
+                <tr data-id="@item.Id">
+                    <td nome="@item.Nome">@item.Nome</td>
+                    <td>@{var ativo = (item.Ativo ? "Sim" : "Não");}@ativo</td>
+                    <td>
+                        <a id="btn_alterar" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Alterar</a>
+                        <a id="btn_excluir" class="btn btn-danger" role="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Excluir</a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+}
+
+@section ModalCadastro{
+    <div class="">
+        <div class="form-group">
+            @Html.Label("txt_nome", "Nome", new { @class = "col-md-3 control-label" })
+            <div class="">
+                @Html.TextBox("txt_nome", null, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("cbx_ativo", "Ativo", new { @class = "col-md-3 control-label" })
+            <div class="">
+                @Html.CheckBox("cbx_ativo")
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts{
+    <script src="~/Scripts/bootstrap-select.min.js"></script>
+
+    <script>
+        var tituloModal = '@ViewBag.Modal',
+            url_alterar = '@Url.Action("ListaPerfil", "Perfil")',
+            url_excluir = '@Url.Action("ExcluirPerfil", "Perfil")',
+            url_salvar = '@Url.Action("SalvarPerfil", "Perfil")',
+            url_paginacao_click = '@Url.Action("PaginacaoPerfil", "Perfil")',
+            url_tam_paginacao_change = '@Url.Action("PaginacaoPerfil", "Perfil")';
+    </script>
+    <script src="~/Scripts/Cadastro/Perfil.js"></script>
+
+}

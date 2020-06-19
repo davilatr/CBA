@@ -64,14 +64,7 @@ namespace CBA.Web.Controllers
             return View();
         }
 
-        [Authorize]
-        public ActionResult UnidadeMedida()
-        {
-            return View();
-        }
-
-        //--------------------------------------------------------------------
-
+        
         [Authorize]
         public ActionResult UnidadeFederativa()
         {
@@ -96,10 +89,5 @@ namespace CBA.Web.Controllers
             return View();
         }
 
-        [Authorize]
-        public ActionResult PerfilUsuario()
-        {
-            return View();
-        }
     }
 }

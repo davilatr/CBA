@@ -21,6 +21,9 @@ namespace CBA.Web.Models
         [DataType(DataType.Password)]
         public string Senha { get; set; }
 
+        [Required(ErrorMessage = "O campo Perfil é obrigatório.")]
+        public int IdPerfil { get; set; }
+
 
         public static UsuarioModel ValidarUsuario(string login, string senha)
         {
@@ -46,7 +49,8 @@ namespace CBA.Web.Models
                         {
                             Id = (int)reader[0],
                             Nome = (string)reader[1],
-                            Login = (string)reader[2]
+                            Login = (string)reader[2],
+                            IdPerfil = (int)reader[4]
                         };
                 }
             }
@@ -95,7 +99,8 @@ namespace CBA.Web.Models
                         {
                             Id = (int)reader[0],
                             Nome = (string)reader[1],
-                            Login = (string)reader[2]
+                            Login = (string)reader[2],
+                            IdPerfil = (int)reader[4]
                         });
                     }
                 }
@@ -125,7 +130,8 @@ namespace CBA.Web.Models
                         {
                             Id = (int)reader[0],
                             Nome = (string)reader[1],
-                            Login = (string)reader[2]
+                            Login = (string)reader[2],
+                            IdPerfil = (int)reader[4]
                         };
                     }
                 }
@@ -176,22 +182,27 @@ namespace CBA.Web.Models
                         comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.Nome;
                         comando.Parameters.Add("@login", SqlDbType.VarChar).Value = this.Login;
                         comando.Parameters.Add("@senha", SqlDbType.VarChar).Value = CriptoHelper.HashMD5(this.Senha);
+                        comando.Parameters.Add("@perfil", SqlDbType.Int).Value = this.IdPerfil;
 
                         comando.CommandText =
-                            "insert into usuario (usuario_nome, usuario_login, usuario_senha) values (@nome, @login, @senha);" +
+                            "insert into usuario (usuario_nome, usuario_login, usuario_senha, perfil_id) values (@nome, @login, @senha, @perfil);" +
                             "select convert(int, scope_identity())";
+                        
                         retorno = (int)comando.ExecuteScalar();
                     }
                     else
                     {
+
+                        comando.Parameters.Add("@id", SqlDbType.Int).Value = this.Id;
                         comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.Nome;
                         comando.Parameters.Add("@login", SqlDbType.VarChar).Value = this.Login;
+                        comando.Parameters.Add("@perfil", SqlDbType.Int).Value = this.IdPerfil;
+
                         if (!string.IsNullOrEmpty(this.Senha))
                             comando.Parameters.Add("@senha", SqlDbType.VarChar).Value = CriptoHelper.HashMD5(this.Senha);
-                        comando.Parameters.Add("@id", SqlDbType.Int).Value = this.Id;
 
                         comando.CommandText =
-                            "update usuario set usuario_nome=@nome, usuario_login=@login" +
+                            "update usuario set usuario_nome=@nome, usuario_login=@login, perfil_id=@perfil" +
                             (!string.IsNullOrEmpty(this.Senha) ? ", usuario_senha=@senha" : "") +
                             " where usuario_id=@id";
 
