@@ -10,6 +10,20 @@ function set_dados_form(dados) {
     $('#cadastro_id').val(dados.Id);
     $('#txt_nome').val(dados.Nome);
     $('#cbx_ativo').prop('checked', dados.Ativo);
+
+    var lista_usuario = $('#lista_usuario');
+    lista_usuario.find('input[type=checkbox]').prop('checked', false);
+
+    if (dados.Usuarios) {
+        var usuario, cbx;
+        for (var i = 0; i < dados.Usuarios.length; i++) {
+            usuario = dados.Usuarios[i];
+            cbx = lista_usuario.find('input[data-id-usuario=' + usuario.Id + ']');
+            if (cbx) {
+                cbx.prop('checked', true);
+            }
+        }
+    }
 }
 
 function set_focus_form() {

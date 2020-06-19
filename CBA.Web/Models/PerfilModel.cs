@@ -19,6 +19,12 @@ namespace CBA.Web.Models
 
         public bool Ativo { get; set; }
 
+        public List<UsuarioModel> Usuarios { get; set; }
+
+        public PerfilModel()
+        {
+            this.Usuarios = new List<UsuarioModel>();
+        }
 
 
         public static int RecuperarPerfilQtde()
@@ -69,6 +75,41 @@ namespace CBA.Web.Models
                 }
             }
             return retorno;
+        }
+
+        public void SelecionarUsuario()
+        {
+            this.Usuarios.Clear();
+
+            using (var conexao = new SqlConnection())
+            {
+                conexao.ConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
+                conexao.Open();
+                using (var comando = new SqlCommand())
+                {
+                    comando.Connection = conexao;
+
+                    comando.Parameters.Add("@perfil", SqlDbType.Int).Value = this.Id;
+
+                    comando.CommandText =
+                        "select u.* " +
+                        "from perfil_usuario pu, usuario u " +
+                        "where (pu.perfil_id = @perfil) and (pu.usuario_id = u.usuario_id) " +
+                        "order by u.usuario_nome";
+
+                    var reader = comando.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        this.Usuarios.Add(new UsuarioModel
+                        {
+                            Id = (int)reader[0],
+                            Nome = (string)reader[1],
+                            Login = (string)reader[2]
+                        });
+                    }
+                }
+            }
+
         }
 
         public static PerfilModel RecuperarPerfil(int id)

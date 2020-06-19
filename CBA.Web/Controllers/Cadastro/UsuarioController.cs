@@ -17,7 +17,6 @@ namespace CBA.Web.Controllers
         public ActionResult Index()
         {
 
-            ViewBag.ListaPerfil = PerfilModel.RecuperarPerfilAtivo();
             ViewBag.ListaTamPag = new SelectList(new int[] { _qtdeMaxLinhasPorPagina, 20, 30 }, _qtdeMaxLinhasPorPagina);
             ViewBag.QtdeMaxLinhasPorPagina = _qtdeMaxLinhasPorPagina;
             ViewBag.PaginaAtual = 1;

@@ -28,7 +28,7 @@ namespace CBA.Web.Controllers
             {
                 //FormsAuthentication.SetAuthCookie(usuario.Nome, login.LembrarMe);
                 var ticket =FormsAuthentication.Encrypt
-                    (new FormsAuthenticationTicket(1, usuario.Nome, DateTime.Now, DateTime.Now.AddMinutes(30), login.LembrarMe, PerfilModel.RecuperarPerfil(usuario.IdPerfil).Nome));
+                    (new FormsAuthenticationTicket(1, usuario.Nome, DateTime.Now, DateTime.Now.AddMinutes(30), login.LembrarMe, usuario.ListaPerfis()));
                 
                 var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, ticket);
 

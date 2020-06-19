@@ -14,6 +14,7 @@ namespace CBA.Web.Controllers.Cadastro
 
         public ActionResult Index()
         {
+            ViewBag.ListaUsuario = UsuarioModel.RecuperarUsuario();
             ViewBag.ListaTamPag = new SelectList(new int[] { _qtdeMaxLinhasPorPagina, 20, 30 }, _qtdeMaxLinhasPorPagina);
             ViewBag.QtdeMaxLinhasPorPagina = _qtdeMaxLinhasPorPagina;
             ViewBag.PaginaAtual = 1;
@@ -41,7 +42,11 @@ namespace CBA.Web.Controllers.Cadastro
         [ValidateAntiForgeryToken]
         public JsonResult ListaPerfil(int id)
         {
-            return Json(PerfilModel.RecuperarPerfil(id));
+            var retorno = PerfilModel.RecuperarPerfil(id);
+            retorno.SelecionarUsuario();
+
+
+            return Json(retorno);
         }
 
         [HttpPost]
