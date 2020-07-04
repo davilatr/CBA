@@ -4,26 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace CBA.Web.Controllers
+namespace CBA.Web.Controllers.Cadastro
 {
-    public class UsuarioController : Controller
+    public class CadastroUnidadeMedidaController : Controller
     {
         private const int _qtdeMaxLinhasPorPagina = 10;
-        private const string _senhaPadrao = "{EsTeLaR}";
 
         // GET: Cadastro
 
         [Authorize]
         public ActionResult Index()
         {
-
             ViewBag.ListaTamPag = new SelectList(new int[] { _qtdeMaxLinhasPorPagina, 20, 30 }, _qtdeMaxLinhasPorPagina);
             ViewBag.QtdeMaxLinhasPorPagina = _qtdeMaxLinhasPorPagina;
             ViewBag.PaginaAtual = 1;
-            ViewBag.SenhaPadrao = _senhaPadrao;
+            var lista = UnidadeMedidaModel.RecuperarUnidadeMedida(ViewBag.PaginaAtual, _qtdeMaxLinhasPorPagina);
+            var qtdeReg = UnidadeMedidaModel.RecuperarUnidadeMedidaQtde();
 
-            var lista = UsuarioModel.RecuperarUsuario(ViewBag.PaginaAtual, _qtdeMaxLinhasPorPagina);
-            var qtdeReg = UsuarioModel.RecuperarUsuarioQtde();
 
             ViewBag.QtdeDePaginas = (qtdeReg / ViewBag.QtdeMaxLinhasPorPagina);
             if (qtdeReg % ViewBag.QtdeMaxLinhasPorPagina > 0)
@@ -31,38 +28,37 @@ namespace CBA.Web.Controllers
 
 
             return View(lista);
-
         }
 
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public JsonResult PaginacaoUsuario(int pagina, int tamPag)
+        public JsonResult PaginacaoUnidadeMedida(int pagina, int tamPag)
         {
-            var lista = UsuarioModel.RecuperarUsuario(pagina, tamPag);
+            var lista = UnidadeMedidaModel.RecuperarUnidadeMedida(pagina, tamPag);
             return Json(lista);
         }
 
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult ListaUsuario(int id)
+        public JsonResult ListaUnidadeMedida(int id)
         {
-            return Json(UsuarioModel.RecuperarUsuario(id));
+            return Json(UnidadeMedidaModel.RecuperarUnidadeMedida(id));
         }
 
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult ExcluirUsuario(int id)
+        public JsonResult ExcluirUnidadeMedida(int id)
         {
-            return Json(UsuarioModel.ExcluirUsuario(id));
+            return Json(UnidadeMedidaModel.ExcluirUnidadeMedida(id));
         }
 
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult SalvarUsuario(UsuarioModel obj)
+        public JsonResult SalvarUnidadeMedida(UnidadeMedidaModel obj)
         {
             var resultado = "ok";
             var mensagens = new List<string>();
@@ -77,10 +73,7 @@ namespace CBA.Web.Controllers
             {
                 try
                 {
-                    if (obj.Senha == _senhaPadrao)
-                        obj.Senha = "";
-
-                    var id = obj.SalvarUsuario();
+                    var id = obj.SalvarUnidadeMedida();
                     if (id > 0)
                         idSalvo = id.ToString();
 
@@ -88,12 +81,15 @@ namespace CBA.Web.Controllers
                         resultado = "erro";
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     resultado = "erro";
+                    Console.WriteLine(ex);
+                    throw;
                 }
             }
             return Json(new { Resultado = resultado, Mensagens = mensagens, IdSalvo = idSalvo });
         }
+
     }
 }

@@ -4,22 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace CBA.Web.Controllers.Cadastro
+namespace CBA.Web.Controllers
 {
-    public class UnidadeMedidaController : Controller
+    [Authorize(Roles ="Gerente,Operador,Administrador")]
+    public class CadastroDestinacaoBemController : Controller
     {
         private const int _qtdeMaxLinhasPorPagina = 10;
 
         // GET: Cadastro
 
-        [Authorize]
+        
         public ActionResult Index()
         {
             ViewBag.ListaTamPag = new SelectList(new int[] { _qtdeMaxLinhasPorPagina, 20, 30 }, _qtdeMaxLinhasPorPagina);
             ViewBag.QtdeMaxLinhasPorPagina = _qtdeMaxLinhasPorPagina;
             ViewBag.PaginaAtual = 1;
-            var lista = UnidadeMedidaModel.RecuperarUnidadeMedida(ViewBag.PaginaAtual, _qtdeMaxLinhasPorPagina);
-            var qtdeReg = UnidadeMedidaModel.RecuperarUnidadeMedidaQtde();
+            var lista = DestinacaoBemModel.RecuperarDestinacaoBem(ViewBag.PaginaAtual, _qtdeMaxLinhasPorPagina);
+            var qtdeReg = DestinacaoBemModel.RecuperarDestinacaoBemQtde();
 
 
             ViewBag.QtdeDePaginas = (qtdeReg / ViewBag.QtdeMaxLinhasPorPagina);
@@ -31,34 +32,32 @@ namespace CBA.Web.Controllers.Cadastro
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
-        public JsonResult PaginacaoUnidadeMedida(int pagina, int tamPag)
+        public JsonResult PaginacaoDestinacaoBem(int pagina, int tamPag)
         {
-            var lista = UnidadeMedidaModel.RecuperarUnidadeMedida(pagina, tamPag);
+            var lista = DestinacaoBemModel.RecuperarDestinacaoBem(pagina, tamPag);
             return Json(lista);
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
-        public JsonResult ListaUnidadeMedida(int id)
+        public JsonResult ListaDestinacaoBem(int id)
         {
-            return Json(UnidadeMedidaModel.RecuperarUnidadeMedida(id));
+            return Json(DestinacaoBemModel.RecuperarDestinacaoBem(id));
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [ValidateAntiForgeryToken]
-        public JsonResult ExcluirUnidadeMedida(int id)
+        public JsonResult ExcluirDestinacaoBem(int id)
         {
-            return Json(UnidadeMedidaModel.ExcluirUnidadeMedida(id));
+            return Json(DestinacaoBemModel.ExcluirDestinacaoBem(id));
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [ValidateAntiForgeryToken]
-        public JsonResult SalvarUnidadeMedida(UnidadeMedidaModel obj)
+        public JsonResult SalvarDestinacaoBem(DestinacaoBemModel obj)
         {
             var resultado = "ok";
             var mensagens = new List<string>();
@@ -73,7 +72,7 @@ namespace CBA.Web.Controllers.Cadastro
             {
                 try
                 {
-                    var id = obj.SalvarUnidadeMedida();
+                    var id = obj.SalvarDestinacaoBem();
                     if (id > 0)
                         idSalvo = id.ToString();
 
@@ -91,5 +90,6 @@ namespace CBA.Web.Controllers.Cadastro
             return Json(new { Resultado = resultado, Mensagens = mensagens, IdSalvo = idSalvo });
         }
 
+        
     }
 }

@@ -1,8 +1,9 @@
-﻿@model List<CBA.Web.Models.DestinacaoBemModel>
+﻿@model List<CBA.Web.Models.PerfilModel>
 @{
     Layout = "~/Views/Shared/_Cadastro.cshtml";
-    ViewBag.Title = "Destinações de Bens";
-    ViewBag.Modal = "Destinações de Bens";
+    ViewBag.Title = "Perfil de Usuário";
+    ViewBag.Modal = "Perfil de Usuário";
+    ViewBag.Lista = Model;
 }
 @section Styles{
     <link href="~/Content/bootstrap-select.min.css" rel="stylesheet" />
@@ -39,7 +40,7 @@
 }
 
 @section ModalCadastro{
-    <div class="">
+    <div>
         <div class="form-group">
             @Html.Label("txt_nome", "Nome", new { @class = "col-md-3 control-label" })
             <div class="">
@@ -52,6 +53,21 @@
                 @Html.CheckBox("cbx_ativo")
             </div>
         </div>
+        <div class="form-group">
+            <h4 class="text-center">Lista de usuários</h4>
+            <div class="well" style="max-height:300px; padding: 0px; overflow:auto">
+                <ul id="lista_usuario" class="list-group checked-list-box" style="margin-bottom:0">
+                    @foreach (var usuario in (List<CBA.Web.Models.UsuarioModel>)ViewBag.ListaUsuario)
+                    {
+                        <li class="list-group-item">
+                            <label style="margin-bottom:0">
+                                <input type="checkbox" data-id-usuario="@usuario.Id" /> @usuario.Nome
+                            </label>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
     </div>
 }
 
@@ -61,12 +77,12 @@
 
     <script>
         var tituloModal = '@ViewBag.Modal',
-            url_alterar = '@Url.Action("ListaDestinacaoBem", "DestinacaoBem")',
-            url_excluir = '@Url.Action("ExcluirDestinacaoBem", "DestinacaoBem")',
-            url_salvar = '@Url.Action("SalvarDestinacaoBem", "DestinacaoBem")',
-            url_paginacao_click = '@Url.Action("PaginacaoDestinacaoBem", "DestinacaoBem")',
-            url_tam_paginacao_change = '@Url.Action("PaginacaoDestinacaoBem", "DestinacaoBem")';
+            url_alterar = '@Url.Action("ListaPerfil", "CadastroPerfil")',
+            url_excluir = '@Url.Action("ExcluirPerfil", "CadastroPerfil")',
+            url_salvar = '@Url.Action("SalvarPerfil", "CadastroPerfCadastroil")',
+            url_paginacao_click = '@Url.Action("PaginacaoPerfil", "Perfil")',
+            url_tam_paginacao_change = '@Url.Action("PaginacaoPerfil", "CadastroPerfil")';
     </script>
-    <script src="~/Scripts/Cadastro/DestinacaoBem.js"></script>
+    <script src="~/Scripts/Cadastro/Perfil.js"></script>
 
 }

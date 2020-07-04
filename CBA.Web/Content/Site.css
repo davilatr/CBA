@@ -61,3 +61,10 @@ textarea {
 #login-user, #login-password, #login-titulo {
     text-align: center;
 }
+
+#grid_semRegistro {
+    height: 100px;
+    text-align: center;
+    border: 1px solid #dddddd;
+    line-height: 100px;
+}

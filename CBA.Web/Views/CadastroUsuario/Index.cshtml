@@ -3,6 +3,7 @@
     Layout = "~/Views/Shared/_Cadastro.cshtml";
     ViewBag.Title = "Usuários do Estelar";
     ViewBag.Modal = "Usuários do Estelar";
+    ViewBag.Lista = Model;
 }
 
 @section Styles{
@@ -58,11 +59,11 @@
     <script src="~/Scripts/bootstrap-select.min.js"></script>
     <script>
         var tituloModal = '@ViewBag.Modal',
-            url_alterar = '@Url.Action("ListaUsuario", "Usuario")',
-            url_excluir = '@Url.Action("ExcluirUsuario", "Usuario")',
-            url_salvar = '@Url.Action("SalvarUsuario", "Usuario")',
-            url_paginacao_click = '@Url.Action("PaginacaoUsuario", "Usuario")',
-            url_tam_paginacao_change = '@Url.Action("PaginacaoUsuario", "Usuario")',
+            url_alterar = '@Url.Action("ListaUsuario", "CadastroUsuario")',
+            url_excluir = '@Url.Action("ExcluirUsuario", "CadastroUsuario")',
+            url_salvar = '@Url.Action("SalvarUsuario", "CadastroUsuario")',
+            url_paginacao_click = '@Url.Action("PaginacaoUsuario", "CadastroUsuario")',
+            url_tam_paginacao_change = '@Url.Action("PaginacaoUsuario", "CadastroUsuario")',
             _senhaPadrao = '@ViewBag.SenhaPadrao';
     </script>
     <script src="~/Scripts/Cadastro/Usuario.js"></script>

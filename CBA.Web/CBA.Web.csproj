@@ -123,10 +123,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CadastroController.cs" />
-    <Compile Include="Controllers\Cadastro\PerfilController.cs" />
-    <Compile Include="Controllers\Cadastro\UnidadeMedidaController.cs" />
-    <Compile Include="Controllers\Cadastro\UsuarioController.cs" />
-    <Compile Include="Controllers\Cadastro\DestinacaoBemController.cs" />
+    <Compile Include="Controllers\Cadastro\CadastroPerfilController.cs" />
+    <Compile Include="Controllers\Cadastro\CadastroUnidadeMedidaController.cs" />
+    <Compile Include="Controllers\Cadastro\CadastroUsuarioController.cs" />
+    <Compile Include="Controllers\Cadastro\CadastroDestinacaoBemController.cs" />
     <Compile Include="Controllers\GraficoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -207,7 +207,7 @@
     <Content Include="Views\Cadastro\AutoInfracao.cshtml" />
     <Content Include="Views\Cadastro\BemApreendido.cshtml" />
     <Content Include="Views\Cadastro\Cidade.cshtml" />
-    <Content Include="Views\DestinacaoBem\Index.cshtml" />
+    <Content Include="Views\CadastroDestinacaoBem\Index.cshtml" />
     <Content Include="Views\Cadastro\EstadoConservacao.cshtml" />
     <Content Include="Views\Cadastro\Pessoa.cshtml" />
     <Content Include="Views\Cadastro\ProcessoAdministrativo.cshtml" />
@@ -217,7 +217,7 @@
     <Content Include="Views\Cadastro\TipoBem.cshtml" />
     <Content Include="Views\Cadastro\UnidadeFederativa.cshtml" />
     <Content Include="Views\Cadastro\UnidadeOrganizacional.cshtml" />
-    <Content Include="Views\Usuario\Index.cshtml" />
+    <Content Include="Views\CadastroUsuario\Index.cshtml" />
     <Content Include="Views\Cadastro\VistoriaBem.cshtml" />
     <Content Include="Views\Grafico\EntradaVsDestinacao.cshtml" />
     <Content Include="Views\Home\Sobre.cshtml" />
@@ -230,8 +230,8 @@
     <Content Include="Views\Relatorio\QtdeBem.cshtml" />
     <Content Include="Views\Relatorio\QtdeBemDestinado.cshtml" />
     <Content Include="Views\Shared\_Cadastro.cshtml" />
-    <Content Include="Views\UnidadeMedida\Index.cshtml" />
-    <Content Include="Views\Perfil\Index.cshtml" />
+    <Content Include="Views\CadastroUnidadeMedida\Index.cshtml" />
+    <Content Include="Views\CadastroPerfil\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

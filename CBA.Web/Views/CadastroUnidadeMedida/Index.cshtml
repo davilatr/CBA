@@ -3,6 +3,7 @@
     Layout = "~/Views/Shared/_Cadastro.cshtml";
     ViewBag.Title = "Unidades de Medida";
     ViewBag.Modal = "Unidades de Medida";
+    ViewBag.Lista = Model;
 }
 @section Styles{
     <link href="~/Content/bootstrap-select.min.css" rel="stylesheet" />
@@ -69,11 +70,11 @@
 
     <script>
         var tituloModal = '@ViewBag.Modal',
-            url_alterar = '@Url.Action("ListaUnidadeMedida", "UnidadeMedida")',
-            url_excluir = '@Url.Action("ExcluirUnidadeMedida", "UnidadeMedida")',
-            url_salvar = '@Url.Action("SalvarUnidadeMedida", "UnidadeMedida")',
-            url_paginacao_click = '@Url.Action("PaginacaoUnidadeMedida", "UnidadeMedida")',
-            url_tam_paginacao_change = '@Url.Action("PaginacaoUnidadeMedida", "UnidadeMedida")';
+            url_alterar = '@Url.Action("ListaUnidadeMedida", "CadastroUnidadeMedida")',
+            url_excluir = '@Url.Action("ExcluirUnidadeMedida", "CadastroUnidadeMedida")',
+            url_salvar = '@Url.Action("SalvarUnidadeMedida", "CadastroUnidadeMedida")',
+            url_paginacao_click = '@Url.Action("PaginacaoUnidadeMedida", "CadastroUnidadeMedida")',
+            url_tam_paginacao_change = '@Url.Action("PaginacaoUnidadeMedida", "CadastroUnidadeMedida")';
     </script>
     <script src="~/Scripts/Cadastro/UnidadeMedida.js"></script>
 

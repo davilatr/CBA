@@ -99,6 +99,12 @@ $(document)
                         function (response) {
                             if (response) {
                                 tr.remove();
+                                var count_grid = $('#grid_cadastro > tbody > tr').length;
+                                if (count_grid == 0) {
+                                    $('#grid_cadastro').addClass('collapse');
+                                    $('#qtdeMaxLinha').addClass('collapse');
+                                    $('#grid_semRegistro').removeClass('collapse');
+                                }
                             }
                         });
                 }
@@ -118,6 +124,9 @@ $(document)
                         linha = criar_linha_grid(param);
 
                     table.append(linha);
+                    $('#grid_cadastro').removeClass('collapse');
+                    $('#qtdeMaxLinha').removeClass('collapse');
+                    $('#grid_semRegistro').addClass('collapse');
                 }
                 else {
                     var linha = $('#grid_cadastro').find('tr[data-id=' + param.Id + ']').find('td');

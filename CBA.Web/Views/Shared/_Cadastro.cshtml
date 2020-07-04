@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Cadastro de "+ ViewBag.Title;
+    var lista = ViewBag.Lista = Model;
 }
 
 
@@ -19,7 +20,7 @@
         <br />
         <div class="row">
             <div class="table-responsive">
-                <table id="grid_cadastro" class="table table-bordered table-hover table-condensed" data-toggle="table">
+                <table id="grid_cadastro" class="table table-bordered table-hover table-condensed @Html.Raw(lista == null || lista.Count == 0 ? "collapse" : "")" data-toggle="table">
                     <thead class="">
                         <tr>
                             @RenderSection("TituloGrid", true)
@@ -29,9 +30,12 @@
                         @RenderSection("ConteudoGrid", true)
                     </tbody>
                 </table>
+                <div id="grid_semRegistro" @Html.Raw(lista != null && lista.Count > 0 ? "class=\"collapse\"" : "")>
+                    Nenhum registro em @ViewBag.Title !!
+                </div>
             </div>
         </div>
-        <div class="row">
+        <div id="qtdeMaxLinha" class="row @Html.Raw(lista == null || lista.Count == 0 ? "collapse" : "")">
             @Html.DropDownList("ddl_qtdeMaxLinhasPorPagina", (SelectList)ViewBag.ListaTamPag, new { @class = "selectpicker" })
         </div>
         @if (ViewBag.QtdeDePaginas > 1)

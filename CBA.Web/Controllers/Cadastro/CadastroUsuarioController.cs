@@ -1,26 +1,29 @@
-﻿using CBA.Web.Models;
-using System;
+﻿using System;
+using CBA.Web.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace CBA.Web.Controllers.Cadastro
+namespace CBA.Web.Controllers
 {
-    [Authorize(Roles = "Administrador")]
-    public class PerfilController : Controller
+    public class CadastroUsuarioController : Controller
     {
-
         private const int _qtdeMaxLinhasPorPagina = 10;
+        private const string _senhaPadrao = "{EsTeLaR}";
 
+        // GET: Cadastro
+
+        [Authorize]
         public ActionResult Index()
         {
-            ViewBag.ListaUsuario = UsuarioModel.RecuperarUsuario();
+
             ViewBag.ListaTamPag = new SelectList(new int[] { _qtdeMaxLinhasPorPagina, 20, 30 }, _qtdeMaxLinhasPorPagina);
             ViewBag.QtdeMaxLinhasPorPagina = _qtdeMaxLinhasPorPagina;
             ViewBag.PaginaAtual = 1;
-            var lista = PerfilModel.RecuperarPerfil(ViewBag.PaginaAtual, _qtdeMaxLinhasPorPagina);
-            var qtdeReg = PerfilModel.RecuperarPerfilQtde();
+            ViewBag.SenhaPadrao = _senhaPadrao;
 
+            var lista = UsuarioModel.RecuperarUsuario(ViewBag.PaginaAtual, _qtdeMaxLinhasPorPagina);
+            var qtdeReg = UsuarioModel.RecuperarUsuarioQtde();
 
             ViewBag.QtdeDePaginas = (qtdeReg / ViewBag.QtdeMaxLinhasPorPagina);
             if (qtdeReg % ViewBag.QtdeMaxLinhasPorPagina > 0)
@@ -28,37 +31,38 @@ namespace CBA.Web.Controllers.Cadastro
 
 
             return View(lista);
+
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public JsonResult PaginacaoPerfil(int pagina, int tamPag)
+        public JsonResult PaginacaoUsuario(int pagina, int tamPag)
         {
-            var lista = PerfilModel.RecuperarPerfil(pagina, tamPag);
+            var lista = UsuarioModel.RecuperarUsuario(pagina, tamPag);
             return Json(lista);
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public JsonResult ListaPerfil(int id)
+        public ActionResult ListaUsuario(int id)
         {
-            var retorno = PerfilModel.RecuperarPerfil(id);
-            retorno.SelecionarUsuario();
-
-
-            return Json(retorno);
+            return Json(UsuarioModel.RecuperarUsuario(id));
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public JsonResult ExcluirPerfil(int id)
+        public ActionResult ExcluirUsuario(int id)
         {
-            return Json(PerfilModel.ExcluirPerfil(id));
+            return Json(UsuarioModel.ExcluirUsuario(id));
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public JsonResult SalvarPerfil(PerfilModel obj)
+        public ActionResult SalvarUsuario(UsuarioModel obj)
         {
             var resultado = "ok";
             var mensagens = new List<string>();
@@ -73,7 +77,10 @@ namespace CBA.Web.Controllers.Cadastro
             {
                 try
                 {
-                    var id = obj.SalvarPerfil();
+                    if (obj.Senha == _senhaPadrao)
+                        obj.Senha = "";
+
+                    var id = obj.SalvarUsuario();
                     if (id > 0)
                         idSalvo = id.ToString();
 
@@ -81,11 +88,9 @@ namespace CBA.Web.Controllers.Cadastro
                         resultado = "erro";
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     resultado = "erro";
-                    Console.WriteLine(ex);
-                    throw;
                 }
             }
             return Json(new { Resultado = resultado, Mensagens = mensagens, IdSalvo = idSalvo });
