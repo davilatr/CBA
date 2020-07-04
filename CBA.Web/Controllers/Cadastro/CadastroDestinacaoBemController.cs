@@ -33,9 +33,9 @@ namespace CBA.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult PaginacaoDestinacaoBem(int pagina, int tamPag)
+        public JsonResult PaginacaoDestinacaoBem(int pagina, int tamPag, string filtro)
         {
-            var lista = DestinacaoBemModel.RecuperarDestinacaoBem(pagina, tamPag);
+            var lista = DestinacaoBemModel.RecuperarDestinacaoBem(pagina, tamPag, filtro);
             return Json(lista);
         }
 

@@ -32,9 +32,9 @@ namespace CBA.Web.Controllers.Cadastro
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult PaginacaoPerfil(int pagina, int tamPag)
+        public JsonResult PaginacaoPerfil(int pagina, int tamPag, string filtro)
         {
-            var lista = PerfilModel.RecuperarPerfil(pagina, tamPag);
+            var lista = PerfilModel.RecuperarPerfil(pagina, tamPag, filtro);
             return Json(lista);
         }
 

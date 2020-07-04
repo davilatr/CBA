@@ -47,7 +47,7 @@ namespace CBA.Web.Models
             return retorno;
         }
 
-        public static List<PerfilModel> RecuperarPerfil(int pag, int tamPag)
+        public static List<PerfilModel> RecuperarPerfil(int pag, int tamPag, string filtro = "")
         {
             var retorno = new List<PerfilModel>();
 
@@ -58,9 +58,17 @@ namespace CBA.Web.Models
                 using (var comando = new SqlCommand())
                 {
                     var pos = ((pag - 1) * tamPag) + 1;
+                    var filtroPesquisa = "";
+
+                    if (!string.IsNullOrEmpty(filtro))
+                        filtroPesquisa = string.Format("where lower(perfil_nome) like '%{0}%' ", filtro.ToLower());
+
                     comando.Connection = conexao;
                     comando.CommandText = string.Format(
-                        "select * from perfil order by perfil_nome offset {0} rows fetch next {1} rows only",
+                        "select * from perfil " +
+                        filtroPesquisa +
+                        "order by perfil_nome " +
+                        "offset {0} rows fetch next {1} rows only",
                         pos > 0 ? pos - 1 : 0, tamPag);
                     var reader = comando.ExecuteReader();
                     while (reader.Read())

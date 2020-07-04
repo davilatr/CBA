@@ -39,7 +39,7 @@ namespace CBA.Web.Models
             return retorno;
         }
 
-        public static List<DestinacaoBemModel> RecuperarDestinacaoBem(int pag, int tamPag)
+        public static List<DestinacaoBemModel> RecuperarDestinacaoBem(int pag, int tamPag, string filtro = "")
         {
             var retorno = new List<DestinacaoBemModel>();
 
@@ -50,9 +50,17 @@ namespace CBA.Web.Models
                 using (var comando = new SqlCommand())
                 {
                     var pos = ((pag - 1) * tamPag)+1;
+                    var filtroPesquisa = "";
+
+                    if (!string.IsNullOrEmpty(filtro))
+                        filtroPesquisa = string.Format("where lower(tipo_destinacao_nome) like '%{0}%' ", filtro.ToLower());
+                    
                     comando.Connection = conexao;
                     comando.CommandText = string.Format(
-                        "select * from tipo_destinacao order by tipo_destinacao_nome offset {0} rows fetch next {1} rows only",
+                        "select * from tipo_destinacao " +
+                        filtroPesquisa +
+                        "order by tipo_destinacao_nome " +
+                        "offset {0} rows fetch next {1} rows only",
                         pos > 0 ? pos - 1 : 0, tamPag);
                     var reader = comando.ExecuteReader();
                     while (reader.Read())

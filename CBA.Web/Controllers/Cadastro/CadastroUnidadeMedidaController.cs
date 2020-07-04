@@ -33,9 +33,9 @@ namespace CBA.Web.Controllers.Cadastro
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public JsonResult PaginacaoUnidadeMedida(int pagina, int tamPag)
+        public JsonResult PaginacaoUnidadeMedida(int pagina, int tamPag, string filtro)
         {
-            var lista = UnidadeMedidaModel.RecuperarUnidadeMedida(pagina, tamPag);
+            var lista = UnidadeMedidaModel.RecuperarUnidadeMedida(pagina, tamPag, filtro);
             return Json(lista);
         }
 

@@ -103,7 +103,7 @@ namespace CBA.Web.Models
             return retorno;
         }
 
-        public static List<UsuarioModel> RecuperarUsuario(int pag = -2, int tamPag = -2)
+        public static List<UsuarioModel> RecuperarUsuario(int pag = -2, int tamPag = -2, string filtro = "")
         {
             var retorno = new List<UsuarioModel>();
 
@@ -114,6 +114,11 @@ namespace CBA.Web.Models
                 using (var comando = new SqlCommand())
                 {
                     var pos = ((pag - 1) * tamPag) + 1;
+                    var filtroPesquisa = "";
+
+                    if (!string.IsNullOrEmpty(filtro))
+                        filtroPesquisa = string.Format("where lower(usuario_nome) like '%{0}%' ", filtro.ToLower());
+
                     comando.Connection = conexao;
 
                     if (pag == -2 && tamPag == -2)
@@ -123,7 +128,10 @@ namespace CBA.Web.Models
                     else
                     {
                         comando.CommandText = string.Format(
-                            "select * from usuario order by usuario_nome offset {0} rows fetch next {1} rows only",
+                            "select * from usuario " +
+                            filtroPesquisa +
+                            "order by usuario_nome " +
+                            "offset {0} rows fetch next {1} rows only",
                             pos > 0 ? pos - 1 : 0, tamPag);
                     }
                     var reader = comando.ExecuteReader();

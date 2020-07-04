@@ -41,7 +41,7 @@ namespace CBA.Web.Models
             return retorno;
         }
 
-        public static List<UnidadeMedidaModel> RecuperarUnidadeMedida(int pag, int tamPag)
+        public static List<UnidadeMedidaModel> RecuperarUnidadeMedida(int pag, int tamPag, string filtro = "")
         {
             var retorno = new List<UnidadeMedidaModel>();
 
@@ -52,10 +52,19 @@ namespace CBA.Web.Models
                 using (var comando = new SqlCommand())
                 {
                     var pos = ((pag - 1) * tamPag) + 1;
+                    var filtroPesquisa = "";
+
+                    if (!string.IsNullOrEmpty(filtro))
+                        filtroPesquisa = string.Format("where lower(unidade_medida_nome) like '%{0}%' ", filtro.ToLower());
+
                     comando.Connection = conexao;
                     comando.CommandText = string.Format(
-                        "select * from unidade_medida order by unidade_medida_nome offset {0} rows fetch next {1} rows only",
+                        "select * from unidade_medida " +
+                        filtroPesquisa +
+                        "order by unidade_medida_nome " +
+                        "offset {0} rows fetch next {1} rows only",
                         pos > 0 ? pos - 1 : 0, tamPag);
+
                     var reader = comando.ExecuteReader();
                     while (reader.Read())
                     {

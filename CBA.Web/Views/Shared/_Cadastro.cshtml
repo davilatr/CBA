@@ -15,7 +15,19 @@
     <hr />
     <section id="cadastro_conteudo">
         <div class="row" id="grid_cabecalho">
-            <a id="btn_incluir" class="btn btn-success" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Incluir</a>
+            <div class="row">
+                <div class="col-md-3">
+                    <a id="btn_incluir" class="btn btn-success" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Incluir</a>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-5 col-md-4">
+                        <div class="input-group">
+                            @Html.TextBox("txt_filtro", null, new { @class = "form-control" })
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <br />
         <div class="row">

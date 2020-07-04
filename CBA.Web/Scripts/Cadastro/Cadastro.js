@@ -151,18 +151,31 @@ $(document)
     .on('click', '.num_pag', function () {
         var btn = $(this),
             tamPag = $('#ddl_qtdeMaxLinhasPorPagina').val(),
+            filtro = $('#txt_filtro'),
             pagina = btn.text(),
             url = url_paginacao_click,
-            param = { 'pagina': pagina, 'tamPag': tamPag };
+            param = { 'pagina': pagina, 'tamPag': tamPag, 'filtro': filtro.val()  };
 
         $.post(url, add_anti_forgery_token(param), function (response) {
             if (response) {
                 var table = $('#grid_cadastro').find('tbody');
                 table.empty();
 
-                for (var i = 0; i < response.length; i++) {
-                    table.append(criar_linha_grid(response[i]));
+                if (response.length > 0) {
+                    for (var i = 0; i < response.length; i++) {
+                        table.append(criar_linha_grid(response[i]));
+                    }
+
+                    $('#grid_cadastro').removeClass('collapse');
+                    $('#qtdeMaxLinha').removeClass('collapse');
+                    $('#grid_semRegistro').addClass('collapse');
                 }
+                else {
+                    $('#grid_cadastro').addClass('collapse');
+                    $('#qtdeMaxLinha').addClass('collapse');
+                    $('#grid_semRegistro').removeClass('collapse');
+                }
+
                 btn.siblings().removeClass('active');
                 btn.addClass('active');
             }
@@ -171,18 +184,64 @@ $(document)
     .on('change', '#ddl_qtdeMaxLinhasPorPagina', function () {
         var ddl = $(this),
             tamPag = ddl.val(),
+            filtro = $('#txt_filtro'),
             pagina = 1,
             url = url_tam_paginacao_change,
-            param = { 'pagina': pagina, 'tamPag': tamPag };
+            param = { 'pagina': pagina, 'tamPag': tamPag, 'filtro': filtro.val()  };
+
+        $.post(url, add_anti_forgery_token(param), function (response) {
+            if (response) {
+                var table = $('#grid_cadastro').find('tbody');
+                table.empty();
+                if (response.length > 0) {
+                    for (var i = 0; i < response.length; i++) {
+                        table.append(criar_linha_grid(response[i]));
+                    }
+
+                    $('#grid_cadastro').removeClass('collapse');
+                    $('#qtdeMaxLinha').removeClass('collapse');
+                    $('#grid_semRegistro').addClass('collapse');
+                }
+                else {
+                    $('#grid_cadastro').addClass('collapse');
+                    $('#qtdeMaxLinha').addClass('collapse');
+                    $('#grid_semRegistro').removeClass('collapse');
+                }
+
+                ddl.siblings().removeClass('active');
+                ddl.addClass('active');
+            }
+        });
+    })
+    .on('keyup', '#txt_filtro', function () {
+        var filtro = $(this),
+            ddl = $('#ddl_qtdeMaxLinhasPorPagina'),
+            tamPag = ddl.val(),
+            pagina = 1,
+            url = url_tam_paginacao_change,
+            param = { 'pagina': pagina, 'tamPag': tamPag, 'filtro': filtro.val() };
 
         $.post(url, add_anti_forgery_token(param), function (response) {
             if (response) {
                 var table = $('#grid_cadastro').find('tbody');
                 table.empty();
 
-                for (var i = 0; i < response.length; i++) {
-                    table.append(criar_linha_grid(response[i]));
+                if (response.length > 0) {
+                    for (var i = 0; i < response.length; i++) {
+                        table.append(criar_linha_grid(response[i]));
+                    }
+
+                    $('#grid_cadastro').removeClass('collapse');
+                    $('#qtdeMaxLinha').removeClass('collapse');
+                    $('#grid_semRegistro').addClass('collapse');
                 }
+                else {
+                    $('#grid_cadastro').addClass('collapse');
+                    $('#qtdeMaxLinha').addClass('collapse');
+                    $('#grid_semRegistro').removeClass('collapse');
+                }
+
+                
                 ddl.siblings().removeClass('active');
                 ddl.addClass('active');
             }
