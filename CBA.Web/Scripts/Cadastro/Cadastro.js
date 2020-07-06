@@ -69,7 +69,7 @@ $(document)
             }
         })
         .fail(function () {
-            swal('Aviso',
+            Swal.fire('Aviso',
                 'Não foi possível recuperar as informações no momento. Tente novamente mais tarde!',
                 'warning');
         });
@@ -111,7 +111,7 @@ $(document)
                         }
                     })
                     .fail(function () {
-                        swal('Aviso',
+                        Swal.fire('Aviso',
                             'Não foi possível excluir o item. Tente novamente mais tarde!',
                             'warning');
                     });
@@ -156,7 +156,7 @@ $(document)
             }
         })
         .fail(function () {
-            swal('Aviso',
+            Swal.fire('Aviso',
                 'Não foi possível salvar o item no momento. Tente novamente mais tarde!',
                 'warning');
         });
@@ -194,7 +194,7 @@ $(document)
             }
         })
         .fail(function () {
-            swal('Aviso',
+            Swal.fire('Aviso',
                 'Não foi possível recuperar as informações no momento. Tente novamente mais tarde!',
                 'warning');
         });
@@ -231,7 +231,7 @@ $(document)
             }
         })
         .fail(function () {
-            swal('Aviso',
+            Swal.fire('Aviso',
                 'Não foi possível recuperar as informações no momento. Tente novamente mais tarde!',
                 'warning');
         });
@@ -270,7 +270,7 @@ $(document)
             }
         })
         .fail(function () {
-            swal('Aviso',
+            Swal.fire('Aviso',
                 'Não foi possível recuperar as informações no momento. Tente novamente mais tarde!',
                 'warning');
         });
