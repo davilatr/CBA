@@ -58,7 +58,7 @@ namespace CBA.Web.Controllers.Cadastro
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult SalvarPerfil(PerfilModel obj)
+        public JsonResult SalvarPerfil(PerfilModel obj, List<int> idUsuarios)
         {
             var resultado = "ok";
             var mensagens = new List<string>();
@@ -71,6 +71,20 @@ namespace CBA.Web.Controllers.Cadastro
             }
             else
             {
+                obj.Usuarios = new List<UsuarioModel>();
+                if (idUsuarios == null || idUsuarios.Count == 00)
+                {
+                    obj.Usuarios.Add(new UsuarioModel() { Id = -1 });
+                }
+                else
+                {
+                    foreach (var id in idUsuarios)
+                    {
+                        obj.Usuarios.Add(new UsuarioModel() { Id = id });
+                    }
+                }
+                
+
                 try
                 {
                     var id = obj.SalvarPerfil();

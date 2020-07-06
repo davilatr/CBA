@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.DynamicData;
 
 namespace CBA.Web.Models
 {
@@ -212,32 +213,75 @@ namespace CBA.Web.Models
             {
                 conexao.ConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
                 conexao.Open();
-                using (var comando = new SqlCommand())
+
+                using (var transacao = conexao.BeginTransaction())
                 {
-                    comando.Connection = conexao;
-
-                    if (model == null)
+                    using (var comando = new SqlCommand())
                     {
-                        comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.Nome;
-                        comando.Parameters.Add("@ativo", SqlDbType.Bit).Value = this.Ativo ? 1 : 0;
+                        comando.Connection = conexao;
+                        comando.Transaction = transacao;
 
-                        comando.CommandText =
-                            "insert into perfil (perfil_nome, perfil_ativo) values (@nome, @ativo); select convert(int, scope_identity())";
-                        retorno = (int)comando.ExecuteScalar();
+                        if (model == null)
+                        {
+                            comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.Nome;
+                            comando.Parameters.Add("@ativo", SqlDbType.Bit).Value = this.Ativo ? 1 : 0;
+
+                            comando.CommandText =
+                                "insert into perfil (perfil_nome, perfil_ativo) values (@nome, @ativo); select convert(int, scope_identity())";
+                            retorno = (int)comando.ExecuteScalar();
+                        }
+                        else
+                        {
+                            comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.Nome;
+                            comando.Parameters.Add("@ativo", SqlDbType.Bit).Value = this.Ativo ? 1 : 0;
+                            comando.Parameters.Add("@id", SqlDbType.Int).Value = this.Id;
+
+                            comando.CommandText =
+                                "update perfil set perfil_nome=@nome, perfil_ativo=@ativo where perfil_id=@id";
+
+                            if (comando.ExecuteNonQuery() > 0)
+                                retorno = this.Id;
+
+                        }
                     }
-                    else
+
+                    if (this.Usuarios != null && this.Usuarios.Count > 0)
                     {
-                        comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.Nome;
-                        comando.Parameters.Add("@ativo", SqlDbType.Bit).Value = this.Ativo ? 1 : 0;
-                        comando.Parameters.Add("@id", SqlDbType.Int).Value = this.Id;
+                        using (var exclusaoPerfilUsuario = new SqlCommand())
+                        {
+                            exclusaoPerfilUsuario.Connection = conexao;
+                            exclusaoPerfilUsuario.Transaction = transacao;
 
-                        comando.CommandText =
-                            "update perfil set perfil_nome=@nome, perfil_ativo=@ativo where perfil_id=@id";
+                            exclusaoPerfilUsuario.Parameters.Add("@idPerfil", SqlDbType.Int).Value = this.Id;
+                            
+                            exclusaoPerfilUsuario.CommandText =
+                                "delete from perfil_usuario where (perfil_id = @idPerfil)";
 
-                        if (comando.ExecuteNonQuery() > 0)
-                            retorno = this.Id;
+                            exclusaoPerfilUsuario.ExecuteScalar();
+                        }
+                        if (this.Usuarios[0].Id != -1)
+                        {
+                            foreach (var usuario in this.Usuarios)
+                            {
+                                using (var inclusaoPerfilUsuario = new SqlCommand())
+                                {
+                                    inclusaoPerfilUsuario.Connection = conexao;
+                                    inclusaoPerfilUsuario.Transaction = transacao;
 
+                                    inclusaoPerfilUsuario.Parameters.Add("@idPerfil", SqlDbType.Int).Value = this.Id;
+                                    inclusaoPerfilUsuario.Parameters.Add("@idUsuario", SqlDbType.Int).Value = usuario.Id;
+
+
+                                    inclusaoPerfilUsuario.CommandText =
+                                        "insert into perfil_usuario (usuario_id, perfil_id) values (@idUsuario, @idPerfil )";
+                                    inclusaoPerfilUsuario.ExecuteScalar();
+                                }
+                            }
+                        }
+                        
                     }
+
+                    transacao.Commit();
                 }
             }
             return retorno;

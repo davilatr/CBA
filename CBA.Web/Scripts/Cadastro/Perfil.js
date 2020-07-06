@@ -2,7 +2,8 @@
     return {
         Id: $('#cadastro_id').val(),
         Nome: $('#txt_nome').val(),
-        Ativo: $('#cbx_ativo').prop('checked')
+        Ativo: $('#cbx_ativo').prop('checked'),
+        idUsuarios: get_usuarios_marcados()
     };
 }
 
@@ -47,4 +48,19 @@ function incluir_linha_grid_salvo(param, linha) {
     linha
         .eq(0).html(param.Nome).end()
         .eq(1).html(param.Ativo ? 'Sim' : 'Não');
+}
+
+function get_usuarios_marcados() {
+    var ids = [],
+        lista_usuario = $('#lista_usuario');
+
+    lista_usuario.find('input[type=checkbox]').each(function (index, input) {
+        var cbx = $(input),
+            marcado = cbx.is(':checked');
+
+        if (marcado) {
+            ids.push(parseInt(cbx.attr('data-id-usuario')));
+        }
+    });
+    return ids;
 }
