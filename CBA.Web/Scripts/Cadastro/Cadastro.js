@@ -67,6 +67,11 @@ $(document)
 
                 abrir_modal(response);
             }
+        })
+        .fail(function () {
+            swal('Aviso',
+                'Não foi possível recuperar as informações no momento. Tente novamente mais tarde!',
+                'warning');
         });
     })
     .on('click', '#btn_excluir', function () {
@@ -94,19 +99,22 @@ $(document)
             callback: function (result) {
                 if (result) {
                     //console.log('This was logged in the callback: ' + result);
-                    $.post(url,
-                        add_anti_forgery_token(param),
-                        function (response) {
-                            if (response) {
-                                tr.remove();
-                                var count_grid = $('#grid_cadastro > tbody > tr').length;
-                                if (count_grid == 0) {
-                                    $('#grid_cadastro').addClass('collapse');
-                                    $('#qtdeMaxLinha').addClass('collapse');
-                                    $('#grid_semRegistro').removeClass('collapse');
-                                }
+                    $.post(url, add_anti_forgery_token(param), function (response) {
+                        if (response) {
+                            tr.remove();
+                            var count_grid = $('#grid_cadastro > tbody > tr').length;
+                            if (count_grid == 0) {
+                                $('#grid_cadastro').addClass('collapse');
+                                $('#qtdeMaxLinha').addClass('collapse');
+                                $('#grid_semRegistro').removeClass('collapse');
                             }
-                        });
+                        }
+                    })
+                    .fail(function () {
+                        swal('Aviso',
+                            'Não foi possível excluir o item. Tente novamente mais tarde!',
+                            'warning');
+                    });
                 }
             }
         });
@@ -146,6 +154,11 @@ $(document)
                 $('#msg_aviso').show();
                 $('#aviso').show();
             }
+        })
+        .fail(function () {
+            swal('Aviso',
+                'Não foi possível salvar o item no momento. Tente novamente mais tarde!',
+                'warning');
         });
     })
     .on('click', '.num_pag', function () {
@@ -154,7 +167,7 @@ $(document)
             filtro = $('#txt_filtro'),
             pagina = btn.text(),
             url = url_paginacao_click,
-            param = { 'pagina': pagina, 'tamPag': tamPag, 'filtro': filtro.val()  };
+            param = { 'pagina': pagina, 'tamPag': tamPag, 'filtro': filtro.val() };
 
         $.post(url, add_anti_forgery_token(param), function (response) {
             if (response) {
@@ -179,6 +192,11 @@ $(document)
                 btn.siblings().removeClass('active');
                 btn.addClass('active');
             }
+        })
+        .fail(function () {
+            swal('Aviso',
+                'Não foi possível recuperar as informações no momento. Tente novamente mais tarde!',
+                'warning');
         });
     })
     .on('change', '#ddl_qtdeMaxLinhasPorPagina', function () {
@@ -187,7 +205,7 @@ $(document)
             filtro = $('#txt_filtro'),
             pagina = 1,
             url = url_tam_paginacao_change,
-            param = { 'pagina': pagina, 'tamPag': tamPag, 'filtro': filtro.val()  };
+            param = { 'pagina': pagina, 'tamPag': tamPag, 'filtro': filtro.val() };
 
         $.post(url, add_anti_forgery_token(param), function (response) {
             if (response) {
@@ -211,6 +229,11 @@ $(document)
                 ddl.siblings().removeClass('active');
                 ddl.addClass('active');
             }
+        })
+        .fail(function () {
+            swal('Aviso',
+                'Não foi possível recuperar as informações no momento. Tente novamente mais tarde!',
+                'warning');
         });
     })
     .on('keyup', '#txt_filtro', function () {
@@ -241,9 +264,14 @@ $(document)
                     $('#grid_semRegistro').removeClass('collapse');
                 }
 
-                
+
                 ddl.siblings().removeClass('active');
                 ddl.addClass('active');
             }
+        })
+        .fail(function () {
+            swal('Aviso',
+                'Não foi possível recuperar as informações no momento. Tente novamente mais tarde!',
+                'warning');
         });
     });

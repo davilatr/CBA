@@ -12,7 +12,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @*@Scripts.Render("~/bundles/bootstrap")*@
-
+    <link href="~/Content/sweetalert2.min.css" rel="stylesheet" />
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -116,6 +116,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/sweetalert2.min.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
